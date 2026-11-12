@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SupeRR Selector Round 1 — RR Auction Strategy Dashboard</title>
+<style>
+*{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#12263f;background:#f6f7f9}
+header{background:#12263f;color:#fff;padding:34px 20px 28px} header h1{margin:0;font-size:30px} header h1 span{color:#ff4d9e}
+header p{margin:8px 0 0;color:#c6d2e0;max-width:760px;line-height:1.5}
+.badge{display:inline-block;background:#e4007c;color:#fff;border-radius:999px;padding:5px 12px;font-size:13px;font-weight:700;margin-top:12px}
+.wrap{max-width:1020px;margin:0 auto;padding:0 16px 40px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:-18px 0 24px}
+.stat{background:#fff;border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(18,38,63,.12)}
+.stat b{font-size:26px;color:#e4007c;display:block} .stat span{font-size:13px;color:#5b6b7d}
+h2{font-size:21px;margin:28px 0 6px} h3{font-size:16px;margin:20px 0 6px}
+p,li{line-height:1.55} .note{color:#5b6b7d;font-size:14px}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(18,38,63,.12)}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid #e8ecf0;font-size:14px;vertical-align:middle}
+th{background:#12263f;color:#fff} tr:last-child td{border-bottom:none}
+.rank{font-weight:800;color:#e4007c;font-size:17px} .sub{color:#5b6b7d;font-size:12px}
+.bar{background:#e8ecf0;border-radius:999px;height:8px;width:110px;display:inline-block;vertical-align:middle;margin-right:8px}
+.bar i{display:block;height:8px;border-radius:999px;background:#e4007c} .good{color:#0a7a4d;font-weight:700}
+img.chart{width:100%;border-radius:12px;background:#fff;box-shadow:0 1px 4px rgba(18,38,63,.12)}
+.card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 1px 4px rgba(18,38,63,.12);margin-top:14px}
+.rule{border-left:4px solid #e4007c;padding:2px 0 2px 12px;margin:10px 0}
+footer{color:#5b6b7d;font-size:13px;text-align:center;padding:20px}
+code{background:#eef1f4;padding:2px 6px;border-radius:6px;font-size:13px}
+</style>
+</head>
+<body>
+<header><div class="wrap" style="padding:0">
+<h1>Rajasthan Royals <span>IPL 2027 Auction Strategy</span></h1>
+<p>SupeRR Selector Season 2 — Round 1: the most reliable players under pressure, ranked from the official data pack. Built by Aman Prasad Bari.</p>
+<span class="badge">Submission deadline: 18 November 2026, 11:59 PM IST</span>
+</div></header>
+<div class="wrap">
+<div class="stats">
+<div class="stat"><b>883</b><span>matches analysed (IPL 2022–26 + T20I)</span></div>
+<div class="stat"><b>193,251</b><span>legal balls</span></div>
+<div class="stat"><b>42,009</b><span>pressure balls (21.7%)</span></div>
+<div class="stat"><b>92.6</b><span>top score — Naman Dhir</span></div>
+</div>
+
+<h2>Top 10 batters under pressure</h2>
+<p class="note">Final Score = 0.60 × Pressure Rating + 0.25 × IPL-only score + 0.15 × recent (2025–26) score. Adj. SR is strike rate under pressure minus the par for the exact situations faced.</p>
+<table><tr><th>#</th><th>Batter</th><th>Final Score</th><th>Pressure SR</th><th>Adj. SR</th><th>IPL press. balls</th><th>Press. balls</th></tr>
+<tr><td class="rank">1</td><td><b>Naman Dhir</b><br><span class="sub">Mumbai Indians</span></td>
+<td><div class="bar"><i style="width:93%"></i></div><b>92.6</b></td>
+<td>224.5</td><td class="good">+68.9</td><td>117</td><td>163</td></tr>
+<tr><td class="rank">2</td><td><b>Suryakumar Yadav</b><br><span class="sub">Mumbai Indians</span></td>
+<td><div class="bar"><i style="width:86%"></i></div><b>85.5</b></td>
+<td>210.4</td><td class="good">+58.7</td><td>243</td><td>374</td></tr>
+<tr><td class="rank">3</td><td><b>Shreyas Iyer</b><br><span class="sub">Punjab Kings</span></td>
+<td><div class="bar"><i style="width:81%"></i></div><b>81.3</b></td>
+<td>194.4</td><td class="good">+36.8</td><td>201</td><td>248</td></tr>
+<tr><td class="rank">4</td><td><b>Tim David</b><br><span class="sub">Royal Challengers Bengaluru</span></td>
+<td><div class="bar"><i style="width:80%"></i></div><b>79.8</b></td>
+<td>191.0</td><td class="good">+35.7</td><td>366</td><td>536</td></tr>
+<tr><td class="rank">5</td><td><b>Jos Buttler</b><br><span class="sub">Gujarat Titans</span></td>
+<td><div class="bar"><i style="width:80%"></i></div><b>79.7</b></td>
+<td>202.8</td><td class="good">+40.8</td><td>180</td><td>213</td></tr>
+<tr><td class="rank">6</td><td><b>Liam Livingstone</b><br><span class="sub">Sunrisers Hyderabad</span></td>
+<td><div class="bar"><i style="width:75%"></i></div><b>74.7</b></td>
+<td>193.5</td><td class="good">+39.2</td><td>147</td><td>246</td></tr>
+<tr><td class="rank">7</td><td><b>William Jacks</b><br><span class="sub">Mumbai Indians</span></td>
+<td><div class="bar"><i style="width:74%"></i></div><b>74.1</b></td>
+<td>196.0</td><td class="good">+47.8</td><td>35</td><td>75</td></tr>
+<tr><td class="rank">8</td><td><b>Marcus Stoinis</b><br><span class="sub">Punjab Kings</span></td>
+<td><div class="bar"><i style="width:74%"></i></div><b>73.5</b></td>
+<td>181.8</td><td class="good">+30.6</td><td>250</td><td>335</td></tr>
+<tr><td class="rank">9</td><td><b>Rinku Singh</b><br><span class="sub">Kolkata Knight Riders</span></td>
+<td><div class="bar"><i style="width:70%"></i></div><b>69.6</b></td>
+<td>186.0</td><td class="good">+31.1</td><td>402</td><td>530</td></tr>
+<tr><td class="rank">10</td><td><b>Nicholas Pooran</b><br><span class="sub">Lucknow Super Giants</span></td>
+<td><div class="bar"><i style="width:70%"></i></div><b>70.1</b></td>
+<td>185.1</td><td class="good">+31.3</td><td>346</td><td>435</td></tr>
+</table>
+<img class="chart" src="data/chart_bat.png" alt="Batters pressure strike rate vs non-pressure baseline">
+
+<h2>Top 10 bowlers under pressure</h2>
+<p class="note">Adj. econ is negative when the bowler is better than par for the same situations.</p>
+<table><tr><th>#</th><th>Bowler</th><th>Final Score</th><th>Pressure econ</th><th>Adj. econ</th><th>Wkts</th><th>IPL press. balls</th><th>Press. balls</th></tr>
+<tr><td class="rank">1</td><td><b>Jasprit Bumrah</b><br><span class="sub">Mumbai Indians &middot; Right-arm Fast (Pace)</span></td>
+<td><div class="bar"><i style="width:85%"></i></div><b>85.2</b></td>
+<td>7.49</td><td class="good">-2.29</td><td>33</td><td>341</td><td>475</td></tr>
+<tr><td class="rank">2</td><td><b>Maheesh Theekshana</b><br><span class="sub">Not in IPL 2026 &middot; Right-arm offbreak (Spin)</span></td>
+<td><div class="bar"><i style="width:85%"></i></div><b>85.4</b></td>
+<td>7.08</td><td class="good">-1.79</td><td>30</td><td>150</td><td>384</td></tr>
+<tr><td class="rank">3</td><td><b>Matheesha Pathirana</b><br><span class="sub">Kolkata Knight Riders &middot; Right-arm Fast (Pace)</span></td>
+<td><div class="bar"><i style="width:82%"></i></div><b>82.1</b></td>
+<td>7.76</td><td class="good">-1.89</td><td>47</td><td>332</td><td>468</td></tr>
+<tr><td class="rank">4</td><td><b>Sunil Narine</b><br><span class="sub">Kolkata Knight Riders &middot; Right-arm offbreak (Spin)</span></td>
+<td><div class="bar"><i style="width:83%"></i></div><b>82.7</b></td>
+<td>6.51</td><td class="good">-1.86</td><td>17</td><td>294</td><td>294</td></tr>
+<tr><td class="rank">5</td><td><b>Noor Ahmad</b><br><span class="sub">Chennai Super Kings &middot; Left-arm Chinaman (Spin)</span></td>
+<td><div class="bar"><i style="width:80%"></i></div><b>80.3</b></td>
+<td>7.26</td><td class="good">-1.33</td><td>20</td><td>170</td><td>276</td></tr>
+<tr><td class="rank">6</td><td><b>Mustafizur Rahman</b><br><span class="sub">Kolkata Knight Riders &middot; Left-arm medium (Pace)</span></td>
+<td><div class="bar"><i style="width:76%"></i></div><b>76.1</b></td>
+<td>8.01</td><td class="good">-1.36</td><td>32</td><td>169</td><td>451</td></tr>
+<tr><td class="rank">7</td><td><b>Corbin Bosch</b><br><span class="sub">Mumbai Indians &middot; Right-arm fast-medium (Pace)</span></td>
+<td><div class="bar"><i style="width:75%"></i></div><b>74.6</b></td>
+<td>7.46</td><td class="good">-1.51</td><td>13</td><td>64</td><td>127</td></tr>
+<tr><td class="rank">8</td><td><b>Gerald Coetzee</b><br><span class="sub">Sunrisers Hyderabad &middot; Right-arm Fast (Pace)</span></td>
+<td><div class="bar"><i style="width:74%"></i></div><b>74.4</b></td>
+<td>7.88</td><td class="good">-1.58</td><td>15</td><td>62</td><td>118</td></tr>
+<tr><td class="rank">9</td><td><b>Varun Chakravarthy</b><br><span class="sub">Kolkata Knight Riders &middot; Right-arm Leg-Break (Spin)</span></td>
+<td><div class="bar"><i style="width:72%"></i></div><b>72.0</b></td>
+<td>7.59</td><td class="good">-0.75</td><td>35</td><td>277</td><td>472</td></tr>
+<tr><td class="rank">10</td><td><b>Eshan Malinga</b><br><span class="sub">Sunrisers Hyderabad &middot; Right-arm fast-medium (Pace)</span></td>
+<td><div class="bar"><i style="width:71%"></i></div><b>71.1</b></td>
+<td>8.01</td><td class="good">-1.20</td><td>22</td><td>159</td><td>292</td></tr>
+</table>
+<img class="chart" src="data/chart_bowl.png" alt="Bowlers pressure economy vs par">
+
+<h2>What counts as pressure?</h2>
+<div class="card">
+<div class="rule"><b>A — Death:</b> overs 18–20 in the 2nd innings, 19–20 in the 1st (12,773 balls)</div>
+<div class="rule"><b>B — Tight finish:</b> 2nd innings, ≤30 balls left, 1–36 runs needed (8,799)</div>
+<div class="rule"><b>C — Late high RRR:</b> 2nd innings, over ≥13, required run rate ≥10 (12,574)</div>
+<div class="rule"><b>D — Collapse:</b> 4+ wickets down by over 10 (7,499)</div>
+<div class="rule"><b>E — Knockout death:</b> knockout match, overs 17–20 (364)</div>
+<p class="note">A ball can qualify under more than one rule. Every figure is then compared against the par for that exact situation and format: death overs in the IPL average SR 177.9 / econ 10.70, while a collapse averages only 112.9 / 6.79.</p>
+</div>
+
+<h2>How the rating works</h2>
+<div class="card">
+<p><b>Pressure Rating (0–100).</b> Batting: adjusted SR 40%, pressure SR 20%, consistency 15%, uplift vs own non-pressure baseline 10%, volume 10%, pressure average 5%. Bowling: adjusted economy 40%, wicket rate 20%, pressure economy 15%, consistency 10%, volume 10%, dot-ball % 5%. Every component is normalised across the eligible pool.</p>
+<p><b>Final Score = 0.60 × Pressure Rating + 0.25 × IPL-only score + 0.15 × recent (2025–26) score.</b> IPL-only and recent scores shrink small samples towards neutral by n/(n+60). Players with too little IPL or recent evidence get neutral scores of 30 and 40.</p>
+<p><b>Eligibility gates:</b> at least 70 pressure balls, 300 total balls and 10 pressure innings. Final lists are active in 2025–26, not Pakistan players, not in RR's IPL 2026 squad, not Sanju Samson or Dinesh Karthik, with at least 50 IPL total balls. Tie-break: within 1.0 Final Score point, more IPL pressure balls ranks higher.</p>
+</div>
+
+<h2>Key findings</h2>
+<div class="card">
+<ul>
+<li><b>Naman Dhir</b> is the No. 1 batter under pressure: 163 pressure balls, SR 224.5, adjusted +68.9.</li>
+<li><b>Akeal Hosein</b> was pure-rating No. 1 (88.5) but fell to 12th once IPL evidence and recent form were weighted: only 16 of his 162 pressure balls were in the IPL.</li>
+<li>RR's death bowling was worse than par (Sandeep Sharma +1.13, Tushar Deshpande +0.98, Sam Curran +1.16).</li>
+<li>The top order is not the problem: Jaiswal (1,485 IPL balls at SR 155.2) and Vaibhav Sooryavanshi (449 IPL balls at SR 229.0) rarely face defined pressure situations, so they fail the gates — a limitation, not a verdict.</li>
+</ul>
+</div>
+
+<h2>Method &amp; code</h2>
+<div class="card">
+<p>All numbers come from the official data pack only. Full Python pipeline and the computed data are in this repository: <code>analyze.py → analyze2.py → analyze3.py → rank.py → blend.py → final_tables.py → checks.py → export_numbers.py → make_charts.py → build_report.py</code>. See <a href="README.md">README.md</a> for the step-by-step explanation.</p>
+</div>
+</div>
+<footer>SupeRR Selector Season 2 — Rajasthan Royals IPL 2027 Auction Strategy — Aman Prasad Bari — 12 November 2026</footer>
+</body>
+</html>
