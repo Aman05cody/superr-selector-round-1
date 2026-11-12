@@ -7,7 +7,7 @@
 <style>
 *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#12263f;background:#f6f7f9}
 header{background:#12263f;color:#fff;padding:34px 20px 28px} header h1{margin:0;font-size:30px} header h1 span{color:#ff4d9e}
-header p{margin:8px 0 0;color:#c6d2e0;max-width:760px;line-height:1.5}
+header p{margin:8px 0 0;color:#c6d2e0;max-width:780px;line-height:1.5}
 .badge{display:inline-block;background:#e4007c;color:#fff;border-radius:999px;padding:5px 12px;font-size:13px;font-weight:700;margin-top:12px}
 .wrap{max-width:1020px;margin:0 auto;padding:0 16px 40px}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:-18px 0 24px}
@@ -15,17 +15,28 @@ header p{margin:8px 0 0;color:#c6d2e0;max-width:760px;line-height:1.5}
 .stat b{font-size:26px;color:#e4007c;display:block} .stat span{font-size:13px;color:#5b6b7d}
 h2{font-size:21px;margin:28px 0 6px} h3{font-size:16px;margin:20px 0 6px}
 p,li{line-height:1.55} .note{color:#5b6b7d;font-size:14px}
+.tabs{display:flex;gap:8px;margin:14px 0} .tabbtn{border:2px solid #12263f;background:#fff;color:#12263f;border-radius:999px;padding:8px 18px;font-weight:700;cursor:pointer;font-size:14px}
+.tabbtn.active{background:#e4007c;border-color:#e4007c;color:#fff}
 table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(18,38,63,.12)}
 th,td{text-align:left;padding:10px 12px;border-bottom:1px solid #e8ecf0;font-size:14px;vertical-align:middle}
 th{background:#12263f;color:#fff} tr:last-child td{border-bottom:none}
 .rank{font-weight:800;color:#e4007c;font-size:17px} .sub{color:#5b6b7d;font-size:12px}
-.bar{background:#e8ecf0;border-radius:999px;height:8px;width:110px;display:inline-block;vertical-align:middle;margin-right:8px}
+.bar{background:#e8ecf0;border-radius:999px;height:8px;width:90px;display:inline-block;vertical-align:middle;margin-right:8px}
 .bar i{display:block;height:8px;border-radius:999px;background:#e4007c} .good{color:#0a7a4d;font-weight:700}
 img.chart{width:100%;border-radius:12px;background:#fff;box-shadow:0 1px 4px rgba(18,38,63,.12)}
 .card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 1px 4px rgba(18,38,63,.12);margin-top:14px}
 .rule{border-left:4px solid #e4007c;padding:2px 0 2px 12px;margin:10px 0}
+.pcard{background:#fff;border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(18,38,63,.12);margin-top:12px}
+.phead{display:flex;gap:12px;align-items:center} .prank{background:#e4007c;color:#fff;font-weight:800;border-radius:10px;padding:6px 10px;font-size:16px}
+.phead b{display:block;font-size:16px} .pstats{display:flex;flex-wrap:wrap;gap:6px 16px;margin:12px 0 4px;font-size:13px;color:#5b6b7d}
+.pstats b{color:#12263f} .pcard p{margin:8px 0 0;font-size:14px}
+.callout{background:#fff0f6;border:2px solid #e4007c;border-radius:12px;padding:18px;margin-top:14px}
+.copybtn{background:#12263f;color:#fff;border:none;border-radius:999px;padding:7px 14px;font-weight:700;cursor:pointer;font-size:13px;margin:8px 0}
+details{background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(18,38,63,.12);margin-top:10px;padding:12px 16px}
+summary{cursor:pointer;font-weight:700} pre{background:#0f1e33;color:#d7e3f0;border-radius:8px;padding:14px;overflow-x:auto;font-size:12px;line-height:1.45}
 footer{color:#5b6b7d;font-size:13px;text-align:center;padding:20px}
 code{background:#eef1f4;padding:2px 6px;border-radius:6px;font-size:13px}
+.tblwrap{overflow-x:auto}
 </style>
 </head>
 <body>
@@ -39,80 +50,155 @@ code{background:#eef1f4;padding:2px 6px;border-radius:6px;font-size:13px}
 <div class="stat"><b>883</b><span>matches analysed (IPL 2022–26 + T20I)</span></div>
 <div class="stat"><b>193,251</b><span>legal balls</span></div>
 <div class="stat"><b>42,009</b><span>pressure balls (21.7%)</span></div>
+<div class="stat"><b>105 / 148</b><span>batters / bowlers passed the gates</span></div>
 <div class="stat"><b>92.6</b><span>top score — Naman Dhir</span></div>
 </div>
 
-<h2>Top 10 batters under pressure</h2>
-<p class="note">Final Score = 0.60 × Pressure Rating + 0.25 × IPL-only score + 0.15 × recent (2025–26) score. Adj. SR is strike rate under pressure minus the par for the exact situations faced.</p>
-<table><tr><th>#</th><th>Batter</th><th>Final Score</th><th>Pressure SR</th><th>Adj. SR</th><th>IPL press. balls</th><th>Press. balls</th></tr>
-<tr><td class="rank">1</td><td><b>Naman Dhir</b><br><span class="sub">Mumbai Indians</span></td>
+<h2>Top 10s — switch between batters and bowlers</h2>
+<div class="tabs"><button class="tabbtn active" onclick="showTab('bat',this)">Top 10 Batters</button><button class="tabbtn" onclick="showTab('bowl',this)">Top 10 Bowlers</button></div>
+<div id="tab-bat">
+<p class="note">Final Score = 0.60 × Pressure Rating + 0.25 × IPL-only score + 0.15 × recent (2025–26) score. Adj. SR is strike rate under pressure minus the par for the exact situations faced. Consistency = share of pressure innings with 15+ runs at SR ≥120.</p>
+<div class="tblwrap"><table><tr><th>#</th><th>Batter</th><th>Final Score</th><th>Balls / Runs</th><th>Press. SR</th><th>Adj. SR</th><th>Avg</th><th>Cons.</th><th>IPL press. SR</th></tr>
+<tr><td class="rank">1</td><td><b>Naman Dhir</b><br><span class="sub">Mumbai Indians &middot; bats 4</span></td>
 <td><div class="bar"><i style="width:93%"></i></div><b>92.6</b></td>
-<td>224.5</td><td class="good">+68.9</td><td>117</td><td>163</td></tr>
-<tr><td class="rank">2</td><td><b>Suryakumar Yadav</b><br><span class="sub">Mumbai Indians</span></td>
+<td>163 / 366</td><td>224.5</td><td class="good">+68.9</td><td>33.3</td><td>83%</td><td>212.8 (117b)</td></tr>
+<tr><td class="rank">2</td><td><b>Suryakumar Yadav</b><br><span class="sub">Mumbai Indians &middot; bats 4</span></td>
 <td><div class="bar"><i style="width:86%"></i></div><b>85.5</b></td>
-<td>210.4</td><td class="good">+58.7</td><td>243</td><td>374</td></tr>
-<tr><td class="rank">3</td><td><b>Shreyas Iyer</b><br><span class="sub">Punjab Kings</span></td>
+<td>374 / 787</td><td>210.4</td><td class="good">+58.7</td><td>30.3</td><td>69%</td><td>204.9 (243b)</td></tr>
+<tr><td class="rank">3</td><td><b>Shreyas Iyer</b><br><span class="sub">Punjab Kings &middot; bats 4</span></td>
 <td><div class="bar"><i style="width:81%"></i></div><b>81.3</b></td>
-<td>194.4</td><td class="good">+36.8</td><td>201</td><td>248</td></tr>
-<tr><td class="rank">4</td><td><b>Tim David</b><br><span class="sub">Royal Challengers Bengaluru</span></td>
+<td>248 / 482</td><td>194.4</td><td class="good">+36.8</td><td>32.1</td><td>47%</td><td>202.0 (201b)</td></tr>
+<tr><td class="rank">4</td><td><b>Tim David</b><br><span class="sub">Royal Challengers Bengaluru &middot; bats 6</span></td>
 <td><div class="bar"><i style="width:80%"></i></div><b>79.8</b></td>
-<td>191.0</td><td class="good">+35.7</td><td>366</td><td>536</td></tr>
-<tr><td class="rank">5</td><td><b>Jos Buttler</b><br><span class="sub">Gujarat Titans</span></td>
+<td>536 / 1024</td><td>191.0</td><td class="good">+35.7</td><td>30.1</td><td>57%</td><td>197.0 (366b)</td></tr>
+<tr><td class="rank">5</td><td><b>Jos Buttler</b><br><span class="sub">Gujarat Titans &middot; bats 2</span></td>
 <td><div class="bar"><i style="width:80%"></i></div><b>79.7</b></td>
-<td>202.8</td><td class="good">+40.8</td><td>180</td><td>213</td></tr>
-<tr><td class="rank">6</td><td><b>Liam Livingstone</b><br><span class="sub">Sunrisers Hyderabad</span></td>
+<td>213 / 432</td><td>202.8</td><td class="good">+40.8</td><td>28.8</td><td>62%</td><td>210.6 (180b)</td></tr>
+<tr><td class="rank">6</td><td><b>Liam Livingstone</b><br><span class="sub">Sunrisers Hyderabad &middot; bats 4</span></td>
 <td><div class="bar"><i style="width:75%"></i></div><b>74.7</b></td>
-<td>193.5</td><td class="good">+39.2</td><td>147</td><td>246</td></tr>
-<tr><td class="rank">7</td><td><b>William Jacks</b><br><span class="sub">Mumbai Indians</span></td>
+<td>246 / 476</td><td>193.5</td><td class="good">+39.2</td><td>21.6</td><td>70%</td><td>221.8 (147b)</td></tr>
+<tr><td class="rank">7</td><td><b>William Jacks</b><br><span class="sub">Mumbai Indians &middot; bats 3</span></td>
 <td><div class="bar"><i style="width:74%"></i></div><b>74.1</b></td>
-<td>196.0</td><td class="good">+47.8</td><td>35</td><td>75</td></tr>
-<tr><td class="rank">8</td><td><b>Marcus Stoinis</b><br><span class="sub">Punjab Kings</span></td>
+<td>75 / 147</td><td>196.0</td><td class="good">+47.8</td><td>24.5</td><td>43%</td><td>274.3 (35b)</td></tr>
+<tr><td class="rank">8</td><td><b>Marcus Stoinis</b><br><span class="sub">Punjab Kings &middot; bats 5</span></td>
 <td><div class="bar"><i style="width:74%"></i></div><b>73.5</b></td>
-<td>181.8</td><td class="good">+30.6</td><td>250</td><td>335</td></tr>
-<tr><td class="rank">9</td><td><b>Rinku Singh</b><br><span class="sub">Kolkata Knight Riders</span></td>
+<td>335 / 609</td><td>181.8</td><td class="good">+30.6</td><td>29.0</td><td>57%</td><td>188.0 (250b)</td></tr>
+<tr><td class="rank">9</td><td><b>Rinku Singh</b><br><span class="sub">Kolkata Knight Riders &middot; bats 6</span></td>
 <td><div class="bar"><i style="width:70%"></i></div><b>69.6</b></td>
-<td>186.0</td><td class="good">+31.1</td><td>402</td><td>530</td></tr>
-<tr><td class="rank">10</td><td><b>Nicholas Pooran</b><br><span class="sub">Lucknow Super Giants</span></td>
+<td>530 / 986</td><td>186.0</td><td class="good">+31.1</td><td>42.9</td><td>60%</td><td>179.4 (402b)</td></tr>
+<tr><td class="rank">10</td><td><b>Nicholas Pooran</b><br><span class="sub">Lucknow Super Giants &middot; bats 4</span></td>
 <td><div class="bar"><i style="width:70%"></i></div><b>70.1</b></td>
-<td>185.1</td><td class="good">+31.3</td><td>346</td><td>435</td></tr>
-</table>
+<td>435 / 805</td><td>185.1</td><td class="good">+31.3</td><td>33.5</td><td>57%</td><td>192.5 (346b)</td></tr>
+</table></div>
 <img class="chart" src="data/chart_bat.png" alt="Batters pressure strike rate vs non-pressure baseline">
-
-<h2>Top 10 bowlers under pressure</h2>
-<p class="note">Adj. econ is negative when the bowler is better than par for the same situations.</p>
-<table><tr><th>#</th><th>Bowler</th><th>Final Score</th><th>Pressure econ</th><th>Adj. econ</th><th>Wkts</th><th>IPL press. balls</th><th>Press. balls</th></tr>
+<p class="note">Every one of the Top 10 lifts his strike rate under pressure. Dhir (+78), Rinku (+57) and Livingstone (+53) improve most on their own baseline; Tim David's uplift is smallest (+24) only because his non-pressure strike rate (167.2) is already the highest of the ten.</p>
+<h3>Player profiles — batters</h3>
+<div class="pcard"><div class="phead"><span class="prank">#1</span><div><b>Naman Dhir</b><span class="sub">Mumbai Indians &middot; Final Score 92.6</span></div></div>
+<div class="pstats"><span><b>224.5</b> pressure SR</span><span><b>+68.9</b> adj. SR</span><span><b>163</b> balls</span><span><b>33.3</b> avg</span><span><b>83%</b> consistency</span><span><b>212.8</b> IPL SR (117b)</span><span><b>227.8</b> 2025–26 SR</span></div>
+<p>The clear No. 1, and not a small-sample artefact. IPL pressure SR 212.8 and recent SR 227.8 both confirm it; consistency 83% is the best in the Top 10. RR fit: the finisher RR do not have — bid to win.</p></div>
+<div class="pcard"><div class="phead"><span class="prank">#2</span><div><b>Suryakumar Yadav</b><span class="sub">Mumbai Indians &middot; Final Score 85.5</span></div></div>
+<div class="pstats"><span><b>210.4</b> pressure SR</span><span><b>+58.7</b> adj. SR</span><span><b>374</b> balls</span><span><b>30.3</b> avg</span><span><b>69%</b> consistency</span><span><b>204.9</b> IPL SR (243b)</span><span><b>174.2</b> 2025–26 SR</span></div>
+<p>The largest proven sample after Tim David. The one caution is recency: his 2025–26 pressure SR (174.2) is well below his 2022–24 figure (223.1). RR fit: pursue only if MI release him, which is unlikely.</p></div>
+<div class="pcard"><div class="phead"><span class="prank">#3</span><div><b>Shreyas Iyer</b><span class="sub">Punjab Kings &middot; Final Score 81.3</span></div></div>
+<div class="pstats"><span><b>194.4</b> pressure SR</span><span><b>+36.8</b> adj. SR</span><span><b>248</b> balls</span><span><b>32.1</b> avg</span><span><b>47%</b> consistency</span><span><b>202.0</b> IPL SR (201b)</span><span><b>213.5</b> 2025–26 SR</span></div>
+<p>The best recent form in the Top 10: pressure SR 213.5 in 2025–26. A No. 4 who anchors and finishes — exactly the middle-order profile RR lack. RR fit: bid to win if released; also the only Top 10 batter with captaincy value.</p></div>
+<div class="pcard"><div class="phead"><span class="prank">#4</span><div><b>Tim David</b><span class="sub">Royal Challengers Bengaluru &middot; Final Score 79.8</span></div></div>
+<div class="pstats"><span><b>191.0</b> pressure SR</span><span><b>+35.7</b> adj. SR</span><span><b>536</b> balls</span><span><b>30.1</b> avg</span><span><b>57%</b> consistency</span><span><b>197.0</b> IPL SR (366b)</span><span><b>206.3</b> 2025–26 SR</span></div>
+<p>The most bankable finisher in the data: 536 pressure balls, 1,024 pressure runs — both the highest of any batter. Volume is its own reliability argument. RR fit: bid to win; the safe pick if Dhir's price runs away.</p></div>
+<div class="pcard"><div class="phead"><span class="prank">#5</span><div><b>Jos Buttler</b><span class="sub">Gujarat Titans &middot; Final Score 79.7</span></div></div>
+<div class="pstats"><span><b>202.8</b> pressure SR</span><span><b>+40.8</b> adj. SR</span><span><b>213</b> balls</span><span><b>28.8</b> avg</span><span><b>62%</b> consistency</span><span><b>210.6</b> IPL SR (180b)</span><span><b>189.0</b> 2025–26 SR</span></div>
+<p>Ex-RR, and RR know exactly what he does: pressure SR 202.8, IPL pressure SR 210.6. Opens or finishes, and keeps wicket. RR fit: a buy-back only if GT release him — Jaiswal and Vaibhav already fill the opener slots.</p></div>
+<div class="pcard"><div class="phead"><span class="prank">#6</span><div><b>Liam Livingstone</b><span class="sub">Sunrisers Hyderabad &middot; Final Score 74.7</span></div></div>
+<div class="pstats"><span><b>193.5</b> pressure SR</span><span><b>+39.2</b> adj. SR</span><span><b>246</b> balls</span><span><b>21.6</b> avg</span><span><b>70%</b> consistency</span><span><b>221.8</b> IPL SR (147b)</span><span><b>176.5</b> 2025–26 SR</span></div>
+<p>Best IPL pressure strike rate in the Top 10 (221.8), plus a bowling option. The flag is recency: only 17 pressure balls in 2025–26. RR fit: bid if the price is right, not at any price.</p></div>
+<div class="pcard"><div class="phead"><span class="prank">#7</span><div><b>William Jacks</b><span class="sub">Mumbai Indians &middot; Final Score 74.1</span></div></div>
+<div class="pstats"><span><b>196.0</b> pressure SR</span><span><b>+47.8</b> adj. SR</span><span><b>75</b> balls</span><span><b>24.5</b> avg</span><span><b>43%</b> consistency</span><span><b>274.3</b> IPL SR (35b)</span><span><b>172.3</b> 2025–26 SR</span></div>
+<p>Adjusted SR +47.8 is third-best, but on only 75 pressure balls — the smallest sample in the Top 10 — and his IPL pressure SR of 274.3 rests on 35 balls. RR fit: a value bid, not a marquee bid.</p></div>
+<div class="pcard"><div class="phead"><span class="prank">#8</span><div><b>Marcus Stoinis</b><span class="sub">Punjab Kings &middot; Final Score 73.5</span></div></div>
+<div class="pstats"><span><b>181.8</b> pressure SR</span><span><b>+30.6</b> adj. SR</span><span><b>335</b> balls</span><span><b>29.0</b> avg</span><span><b>57%</b> consistency</span><span><b>188.0</b> IPL SR (250b)</span><span><b>193.4</b> 2025–26 SR</span></div>
+<p>335 pressure balls, consistent across every cut. Ignore his bowling under pressure (economy 10.69): buy the bat. RR fit: bid if the price is right; the all-rounder slot is already crowded at RR.</p></div>
+<div class="pcard"><div class="phead"><span class="prank">#9</span><div><b>Rinku Singh</b><span class="sub">Kolkata Knight Riders &middot; Final Score 69.6</span></div></div>
+<div class="pstats"><span><b>186.0</b> pressure SR</span><span><b>+31.1</b> adj. SR</span><span><b>530</b> balls</span><span><b>42.9</b> avg</span><span><b>60%</b> consistency</span><span><b>179.4</b> IPL SR (402b)</span><span><b>171.5</b> 2025–26 SR</span></div>
+<p>The safest IPL-proven finisher in the data: 402 IPL pressure balls (more than any batter), pressure average 42.9 — the highest in the Top 10, because he finishes unbeaten so often. RR fit: bid to win — the lowest-risk Indian finisher available.</p></div>
+<div class="pcard"><div class="phead"><span class="prank">#10</span><div><b>Nicholas Pooran</b><span class="sub">Lucknow Super Giants &middot; Final Score 70.1</span></div></div>
+<div class="pstats"><span><b>185.1</b> pressure SR</span><span><b>+31.3</b> adj. SR</span><span><b>435</b> balls</span><span><b>33.5</b> avg</span><span><b>57%</b> consistency</span><span><b>192.5</b> IPL SR (346b)</span><span><b>186.4</b> 2025–26 SR</span></div>
+<p>435 pressure balls, IPL pressure SR 192.5, left-handed middle order — a different look from RR's right-heavy finishers. RR fit: bid if the price is right.</p></div>
+<p class="note"><b>First alternates:</b> Romario Shepherd (69.7) — IPL pressure SR 205.2 and recent SR 190.6, but only 97 IPL pressure balls; and Tristan Stubbs (66.5) — 312 IPL pressure balls, but his recent SR fell to 154.3.</p>
+</div>
+<div id="tab-bowl" style="display:none">
+<p class="note">Adj. econ is negative when the bowler is better than par for the same situations. Consistency = share of pressure innings (≥6 balls) with economy ≤8.00.</p>
+<div class="tblwrap"><table><tr><th>#</th><th>Bowler</th><th>Final Score</th><th>Balls / Wkts</th><th>Press. econ</th><th>Adj. econ</th><th>Wkts/24</th><th>Dot %</th><th>IPL press. econ</th></tr>
 <tr><td class="rank">1</td><td><b>Jasprit Bumrah</b><br><span class="sub">Mumbai Indians &middot; Right-arm Fast (Pace)</span></td>
 <td><div class="bar"><i style="width:85%"></i></div><b>85.2</b></td>
-<td>7.49</td><td class="good">-2.29</td><td>33</td><td>341</td><td>475</td></tr>
+<td>475 / 33</td><td>7.49</td><td class="good">-2.29</td><td>1.67</td><td>37%</td><td>7.06 (341b)</td></tr>
 <tr><td class="rank">2</td><td><b>Maheesh Theekshana</b><br><span class="sub">Not in IPL 2026 &middot; Right-arm offbreak (Spin)</span></td>
 <td><div class="bar"><i style="width:85%"></i></div><b>85.4</b></td>
-<td>7.08</td><td class="good">-1.79</td><td>30</td><td>150</td><td>384</td></tr>
+<td>384 / 30</td><td>7.08</td><td class="good">-1.79</td><td>1.88</td><td>37%</td><td>6.68 (150b)</td></tr>
 <tr><td class="rank">3</td><td><b>Matheesha Pathirana</b><br><span class="sub">Kolkata Knight Riders &middot; Right-arm Fast (Pace)</span></td>
 <td><div class="bar"><i style="width:82%"></i></div><b>82.1</b></td>
-<td>7.76</td><td class="good">-1.89</td><td>47</td><td>332</td><td>468</td></tr>
+<td>468 / 47</td><td>7.76</td><td class="good">-1.89</td><td>2.41</td><td>40%</td><td>8.11 (332b)</td></tr>
 <tr><td class="rank">4</td><td><b>Sunil Narine</b><br><span class="sub">Kolkata Knight Riders &middot; Right-arm offbreak (Spin)</span></td>
 <td><div class="bar"><i style="width:83%"></i></div><b>82.7</b></td>
-<td>6.51</td><td class="good">-1.86</td><td>17</td><td>294</td><td>294</td></tr>
+<td>294 / 17</td><td>6.51</td><td class="good">-1.86</td><td>1.39</td><td>37%</td><td>6.51 (294b)</td></tr>
 <tr><td class="rank">5</td><td><b>Noor Ahmad</b><br><span class="sub">Chennai Super Kings &middot; Left-arm Chinaman (Spin)</span></td>
 <td><div class="bar"><i style="width:80%"></i></div><b>80.3</b></td>
-<td>7.26</td><td class="good">-1.33</td><td>20</td><td>170</td><td>276</td></tr>
+<td>276 / 20</td><td>7.26</td><td class="good">-1.33</td><td>1.74</td><td>42%</td><td>6.88 (170b)</td></tr>
 <tr><td class="rank">6</td><td><b>Mustafizur Rahman</b><br><span class="sub">Kolkata Knight Riders &middot; Left-arm medium (Pace)</span></td>
 <td><div class="bar"><i style="width:76%"></i></div><b>76.1</b></td>
-<td>8.01</td><td class="good">-1.36</td><td>32</td><td>169</td><td>451</td></tr>
+<td>451 / 32</td><td>8.01</td><td class="good">-1.36</td><td>1.70</td><td>39%</td><td>9.23 (169b)</td></tr>
 <tr><td class="rank">7</td><td><b>Corbin Bosch</b><br><span class="sub">Mumbai Indians &middot; Right-arm fast-medium (Pace)</span></td>
 <td><div class="bar"><i style="width:75%"></i></div><b>74.6</b></td>
-<td>7.46</td><td class="good">-1.51</td><td>13</td><td>64</td><td>127</td></tr>
+<td>127 / 13</td><td>7.46</td><td class="good">-1.51</td><td>2.46</td><td>54%</td><td>8.81 (64b)</td></tr>
 <tr><td class="rank">8</td><td><b>Gerald Coetzee</b><br><span class="sub">Sunrisers Hyderabad &middot; Right-arm Fast (Pace)</span></td>
 <td><div class="bar"><i style="width:74%"></i></div><b>74.4</b></td>
-<td>7.88</td><td class="good">-1.58</td><td>15</td><td>62</td><td>118</td></tr>
+<td>118 / 15</td><td>7.88</td><td class="good">-1.58</td><td>3.05</td><td>46%</td><td>9.39 (62b)</td></tr>
 <tr><td class="rank">9</td><td><b>Varun Chakravarthy</b><br><span class="sub">Kolkata Knight Riders &middot; Right-arm Leg-Break (Spin)</span></td>
 <td><div class="bar"><i style="width:72%"></i></div><b>72.0</b></td>
-<td>7.59</td><td class="good">-0.75</td><td>35</td><td>277</td><td>472</td></tr>
+<td>472 / 35</td><td>7.59</td><td class="good">-0.75</td><td>1.78</td><td>44%</td><td>8.36 (277b)</td></tr>
 <tr><td class="rank">10</td><td><b>Eshan Malinga</b><br><span class="sub">Sunrisers Hyderabad &middot; Right-arm fast-medium (Pace)</span></td>
 <td><div class="bar"><i style="width:71%"></i></div><b>71.1</b></td>
-<td>8.01</td><td class="good">-1.20</td><td>22</td><td>159</td><td>292</td></tr>
-</table>
+<td>292 / 22</td><td>8.01</td><td class="good">-1.20</td><td>1.81</td><td>36%</td><td>8.57 (159b)</td></tr>
+</table></div>
 <img class="chart" src="data/chart_bowl.png" alt="Bowlers pressure economy vs par">
+<p class="note">Every Top 10 bowler beats par for the situations he bowled in. Bumrah's gap (−2.29) is the largest, and it comes mostly at the death, where par is 10.70 — the hardest place to beat par. Narine's gap comes with the lowest absolute economy (6.51).</p>
+<h3>Player profiles — bowlers</h3>
+<div class="pcard"><div class="phead"><span class="prank">#1</span><div><b>Jasprit Bumrah</b><span class="sub">Mumbai Indians &middot; Right-arm Fast (Pace) &middot; Final Score 85.2</span></div></div>
+<div class="pstats"><span><b>7.49</b> pressure econ</span><span><b>-2.29</b> adj. econ</span><span><b>475</b> balls</span><span><b>33</b> wkts</span><span><b>1.67</b> wkts/24</span><span><b>61%</b> consistency</span><span><b>7.06</b> IPL econ (341b)</span><span><b>7.61</b> 2025–26 econ</span></div>
+<p>Best adjusted economy in the data (−2.29) on the biggest death sample: 53% of his 475 pressure balls were at the death, IPL pressure economy 7.06 against a death par of 10.70. RR fit: the benchmark, not a realistic target — use his number to price everyone else.</p></div>
+<div class="pcard"><div class="phead"><span class="prank">#2</span><div><b>Maheesh Theekshana</b><span class="sub">Not in IPL 2026 &middot; Right-arm offbreak (Spin) &middot; Final Score 85.4</span></div></div>
+<div class="pstats"><span><b>7.08</b> pressure econ</span><span><b>-1.79</b> adj. econ</span><span><b>384</b> balls</span><span><b>30</b> wkts</span><span><b>1.88</b> wkts/24</span><span><b>73%</b> consistency</span><span><b>6.68</b> IPL econ (150b)</span><span><b>7.03</b> 2025–26 econ</span></div>
+<p>The most important name in this report: RR's own 2025 pressure bowler (adjusted −1.79, 384 balls), IPL pressure economy 6.68, rock-steady across periods (7.10 → 7.03). He did not play IPL 2026. RR fit: re-sign him.</p></div>
+<div class="pcard"><div class="phead"><span class="prank">#3</span><div><b>Matheesha Pathirana</b><span class="sub">Kolkata Knight Riders &middot; Right-arm Fast (Pace) &middot; Final Score 82.1</span></div></div>
+<div class="pstats"><span><b>7.76</b> pressure econ</span><span><b>-1.89</b> adj. econ</span><span><b>468</b> balls</span><span><b>47</b> wkts</span><span><b>2.41</b> wkts/24</span><span><b>62%</b> consistency</span><span><b>8.11</b> IPL econ (332b)</span><span><b>9.74</b> 2025–26 econ</span></div>
+<p>The wicket-taker: 47 pressure wickets, 2.41 per 24 balls, 468 pressure balls. The warning is recent form — pressure economy 9.74 in 2025–26 against 7.12 in 2022–24. RR fit: bid, but with a hard price ceiling.</p></div>
+<div class="pcard"><div class="phead"><span class="prank">#4</span><div><b>Sunil Narine</b><span class="sub">Kolkata Knight Riders &middot; Right-arm offbreak (Spin) &middot; Final Score 82.7</span></div></div>
+<div class="pstats"><span><b>6.51</b> pressure econ</span><span><b>-1.86</b> adj. econ</span><span><b>294</b> balls</span><span><b>17</b> wkts</span><span><b>1.39</b> wkts/24</span><span><b>79%</b> consistency</span><span><b>6.51</b> IPL econ (294b)</span><span><b>6.53</b> 2025–26 econ</span></div>
+<p>The reliability pick: all 294 of his pressure balls were bowled in the IPL, economy 6.51, almost identical across periods (6.50 → 6.53). Consistency 79% is the best among the pace/spin leaders. RR fit: pursue only if KKR release him.</p></div>
+<div class="pcard"><div class="phead"><span class="prank">#5</span><div><b>Noor Ahmad</b><span class="sub">Chennai Super Kings &middot; Left-arm Chinaman (Spin) &middot; Final Score 80.3</span></div></div>
+<div class="pstats"><span><b>7.26</b> pressure econ</span><span><b>-1.33</b> adj. econ</span><span><b>276</b> balls</span><span><b>20</b> wkts</span><span><b>1.74</b> wkts/24</span><span><b>52%</b> consistency</span><span><b>6.88</b> IPL econ (170b)</span><span><b>6.95</b> 2025–26 econ</span></div>
+<p>Left-arm wrist-spin, 276 pressure balls, IPL pressure economy 6.88, recent 6.95 — no decline anywhere in his profile, and the youngest of the spin options. RR fit: bid to win; a long-term asset, not a one-season fix.</p></div>
+<div class="pcard"><div class="phead"><span class="prank">#6</span><div><b>Mustafizur Rahman</b><span class="sub">Kolkata Knight Riders &middot; Left-arm medium (Pace) &middot; Final Score 76.1</span></div></div>
+<div class="pstats"><span><b>8.01</b> pressure econ</span><span><b>-1.36</b> adj. econ</span><span><b>451</b> balls</span><span><b>32</b> wkts</span><span><b>1.70</b> wkts/24</span><span><b>59%</b> consistency</span><span><b>9.23</b> IPL econ (169b)</span><span><b>6.47</b> 2025–26 econ</span></div>
+<p>The form pick: pressure economy improved from 8.79 (2022–24) to 6.47 (2025–26). The counter-flag is his IPL pressure economy (9.23) — the improvement is partly T20I-driven. RR fit: bid if the price is right.</p></div>
+<div class="pcard"><div class="phead"><span class="prank">#7</span><div><b>Corbin Bosch</b><span class="sub">Mumbai Indians &middot; Right-arm fast-medium (Pace) &middot; Final Score 74.6</span></div></div>
+<div class="pstats"><span><b>7.46</b> pressure econ</span><span><b>-1.51</b> adj. econ</span><span><b>127</b> balls</span><span><b>13</b> wkts</span><span><b>2.46</b> wkts/24</span><span><b>54%</b> consistency</span><span><b>8.81</b> IPL econ (64b)</span><span><b>7.46</b> 2025–26 econ</span></div>
+<p>All 127 of his pressure balls came in 2025–26 — a genuine newcomer — with the best dot-ball rate in the Top 10 (53.5%). IPL pressure economy 8.81 tempers the enthusiasm. RR fit: a value pace bid.</p></div>
+<div class="pcard"><div class="phead"><span class="prank">#8</span><div><b>Gerald Coetzee</b><span class="sub">Sunrisers Hyderabad &middot; Right-arm Fast (Pace) &middot; Final Score 74.4</span></div></div>
+<div class="pstats"><span><b>7.88</b> pressure econ</span><span><b>-1.58</b> adj. econ</span><span><b>118</b> balls</span><span><b>15</b> wkts</span><span><b>3.05</b> wkts/24</span><span><b>69%</b> consistency</span><span><b>9.39</b> IPL econ (62b)</span><span><b>8.00</b> 2025–26 econ</span></div>
+<p>Best wicket rate in the Top 10 (3.05 per 24 balls) on 118 pressure balls. But his IPL pressure economy is 9.39 — the T20I numbers (6.21) flatter him. RR fit: bid if the price is right, as a wicket-taking change-up.</p></div>
+<div class="pcard"><div class="phead"><span class="prank">#9</span><div><b>Varun Chakravarthy</b><span class="sub">Kolkata Knight Riders &middot; Right-arm Leg-Break (Spin) &middot; Final Score 72.0</span></div></div>
+<div class="pstats"><span><b>7.59</b> pressure econ</span><span><b>-0.75</b> adj. econ</span><span><b>472</b> balls</span><span><b>35</b> wkts</span><span><b>1.78</b> wkts/24</span><span><b>68%</b> consistency</span><span><b>8.36</b> IPL econ (277b)</span><span><b>6.32</b> 2025–26 econ</span></div>
+<p>472 pressure balls, and the recent trend is the story: pressure economy 6.32 in 2025–26 against 8.36 in the IPL overall. A mystery spinner peaking now. RR fit: bid to win if the price stays sane.</p></div>
+<div class="pcard"><div class="phead"><span class="prank">#10</span><div><b>Eshan Malinga</b><span class="sub">Sunrisers Hyderabad &middot; Right-arm fast-medium (Pace) &middot; Final Score 71.1</span></div></div>
+<div class="pstats"><span><b>8.01</b> pressure econ</span><span><b>-1.20</b> adj. econ</span><span><b>292</b> balls</span><span><b>22</b> wkts</span><span><b>1.81</b> wkts/24</span><span><b>59%</b> consistency</span><span><b>8.57</b> IPL econ (159b)</span><span><b>8.50</b> 2025–26 econ</span></div>
+<p>Steady rather than spectacular: 292 pressure balls, economy 8.01, IPL pressure economy 8.57, recent 8.50. No red flags, no fireworks. RR fit: the sensible last pick — a death-overs workhorse at a workhorse price.</p></div>
+<p class="note"><b>First alternates:</b> Lungi Ngidi (71.7) — wicket rate 2.57 per 24 balls, but economy 8.49 and consistency only 40%; and Akeal Hosein (71.1) — No. 1 on the raw five-year rating, 12th on the Final Score (see the story below).</p>
+</div>
+
+<div class="callout">
+<h3 style="margin-top:0">The Akeal Hosein story</h3>
+<p>Hosein was the No. 1 bowler on the raw five-year Pressure Rating (88.5): 162 pressure balls, economy 5.63, adjusted −2.27. But only 16 of those 162 pressure balls were bowled in the IPL, and his recent economy (7.41) is far worse than his earlier one (4.47). Once IPL evidence and recent form were weighted, he fell to 12th. That is the whole lesson of this round: the best player on paper is not always the best player when it matters.</p>
+</div>
 
 <h2>What counts as pressure?</h2>
 <div class="card">
@@ -121,31 +207,464 @@ code{background:#eef1f4;padding:2px 6px;border-radius:6px;font-size:13px}
 <div class="rule"><b>C — Late high RRR:</b> 2nd innings, over ≥13, required run rate ≥10 (12,574)</div>
 <div class="rule"><b>D — Collapse:</b> 4+ wickets down by over 10 (7,499)</div>
 <div class="rule"><b>E — Knockout death:</b> knockout match, overs 17–20 (364)</div>
-<p class="note">A ball can qualify under more than one rule. Every figure is then compared against the par for that exact situation and format: death overs in the IPL average SR 177.9 / econ 10.70, while a collapse averages only 112.9 / 6.79.</p>
+<p class="note">A ball can qualify under more than one rule. Every figure is compared against the par for that exact situation and format. Par table (subtype × format, SR / econ): Collapse IPL 112.9/6.79, T20I 104.9/6.31; Death IPL 177.9/10.70, T20I 163.0/9.83; Knockout death IPL 173.5/10.43, T20I 140.3/8.42; Late high RRR IPL 150.9/9.08, T20I 136.6/8.22; Tight finish IPL 173.7/10.45, T20I 148.7/8.94.</p>
+<img class="chart" src="data/chart_par.png" alt="Par strike rate by pressure subtype and format">
 </div>
 
 <h2>How the rating works</h2>
 <div class="card">
-<p><b>Pressure Rating (0–100).</b> Batting: adjusted SR 40%, pressure SR 20%, consistency 15%, uplift vs own non-pressure baseline 10%, volume 10%, pressure average 5%. Bowling: adjusted economy 40%, wicket rate 20%, pressure economy 15%, consistency 10%, volume 10%, dot-ball % 5%. Every component is normalised across the eligible pool.</p>
-<p><b>Final Score = 0.60 × Pressure Rating + 0.25 × IPL-only score + 0.15 × recent (2025–26) score.</b> IPL-only and recent scores shrink small samples towards neutral by n/(n+60). Players with too little IPL or recent evidence get neutral scores of 30 and 40.</p>
-<p><b>Eligibility gates:</b> at least 70 pressure balls, 300 total balls and 10 pressure innings. Final lists are active in 2025–26, not Pakistan players, not in RR's IPL 2026 squad, not Sanju Samson or Dinesh Karthik, with at least 50 IPL total balls. Tie-break: within 1.0 Final Score point, more IPL pressure balls ranks higher.</p>
+<p><b>Batting — Pressure Rating (0–100).</b> Adjusted SR 40%, pressure SR 20%, consistency 15%, uplift vs own non-pressure baseline 10%, volume 10%, pressure average 5%. Each component is normalised across the eligible pool (2nd–98th percentile, clipped 0–100).</p>
+<p><b>Bowling — Pressure Rating (0–100).</b> Adjusted economy 40%, wicket rate 20%, pressure economy 15%, consistency 10%, volume 10%, dot-ball % 5%.</p>
+<p><b>Final Score = 0.60 × Pressure Rating + 0.25 × IPL-only score + 0.15 × recent (2025–26) score.</b> The IPL-only and recent scores use the same adjusted metric, shrunk by n/(n+60) so a brilliant 20-ball cameo cannot outrank 300 balls of evidence, and scored as neutral (30 / 40) when a player has fewer than 20 IPL pressure balls or 30 recent pressure balls.</p>
+<p><b>Tie-break.</b> If two Final Scores are within 1.0 point, the player with more IPL pressure balls ranks higher. This decided three places: Bumrah over Theekshana (341 vs 150 IPL pressure balls), Pathirana over Narine (332 vs 294), and Rinku Singh over Nicholas Pooran (402 vs 346).</p>
+<p><b>Eligibility gates:</b> ≥70 pressure balls, ≥300 total legal balls, ≥10 pressure innings, and at least two seasons in the data. 105 batters and 148 bowlers pass.</p>
+<p><b>Auction filters (applied after ranking):</b> (i) played in 2025 or 2026; (ii) not a Pakistan player; (iii) not in RR's IPL 2026 squad; (iv) at least 50 IPL balls in the data; (v) Sanju Samson excluded (traded by RR to CSK for IPL 2026). No player was excluded for reputation, age or price — only by these five stated rules.</p>
 </div>
 
-<h2>Key findings</h2>
+<h2>RR's gaps — and the auction plan</h2>
 <div class="card">
-<ul>
-<li><b>Naman Dhir</b> is the No. 1 batter under pressure: 163 pressure balls, SR 224.5, adjusted +68.9.</li>
-<li><b>Akeal Hosein</b> was pure-rating No. 1 (88.5) but fell to 12th once IPL evidence and recent form were weighted: only 16 of his 162 pressure balls were in the IPL.</li>
-<li>RR's death bowling was worse than par (Sandeep Sharma +1.13, Tushar Deshpande +0.98, Sam Curran +1.16).</li>
-<li>The top order is not the problem: Jaiswal (1,485 IPL balls at SR 155.2) and Vaibhav Sooryavanshi (449 IPL balls at SR 229.0) rarely face defined pressure situations, so they fail the gates — a limitation, not a verdict.</li>
-</ul>
+<p><b>The problem.</b> RR's established death bowlers were worse than par under pressure: Sandeep Sharma +1.13, Tushar Deshpande +0.98, Sam Curran +1.16. The batting was no better at the other end: Jaiswal's adjusted SR was −8.7, while the middle order carried the team (Parag +15.0, Hetmyer +13.2, Jurel +4.6). Even the bench beat the regulars: Ferreira +37.5 and Shubham Dubey +28.4.</p>
+<p><b>Bid to win (realistic and fills the gap).</b> Theekshana (re-sign), Naman Dhir, Tim David, Rinku Singh, Noor Ahmad, Varun Chakravarthy, Eshan Malinga.</p>
+<p><b>Bid if the price is right.</b> Shreyas Iyer, Marcus Stoinis, Nicholas Pooran, Liam Livingstone, William Jacks, Mustafizur Rahman, Corbin Bosch, Gerald Coetzee.</p>
+<p><b>Pursue only if released.</b> Suryakumar Yadav, Jos Buttler, Jasprit Bumrah, Matheesha Pathirana, Sunil Narine.</p>
+<p><b>The overseas-slot constraint.</b> Only three of the Top 10 batters (Dhir, Shreyas, Rinku) and two of the Top 10 bowlers (Bumrah, Varun) are Indian. An IPL squad holds at most 8 overseas players and an XI at most 4. The Indian core (Dhir, Shreyas, Rinku) plus two or three overseas picks (Theekshana, Noor, David) is the realistic shape of the shopping list.</p>
+<p><b>Price discipline.</b> Do not pay a marquee price for Pathirana (recent economy 9.74), Coetzee (IPL pressure economy 9.39) or Hosein (16 IPL pressure balls). And fix selection too: Ferreira (+37.5) and Dubey (+28.4) already outperform RR's regular finishers under pressure and should play more, whatever the auction delivers.</p>
+<p><b>The top order is not the problem.</b> Jaiswal has faced 1,485 IPL balls at SR 155.2 and Vaibhav Sooryavanshi 449 IPL balls at SR 229.0. Neither appears in the pressure rankings because openers rarely face defined pressure situations (Sooryavanshi 4 pressure balls, Jaiswal 46) — a limitation of the definition, not a verdict.</p>
 </div>
 
-<h2>Method &amp; code</h2>
+<h2>Reliability checks — and where the model is less certain</h2>
 <div class="card">
-<p>All numbers come from the official data pack only. Full Python pipeline and the computed data are in this repository: <code>analyze.py → analyze2.py → analyze3.py → rank.py → blend.py → final_tables.py → checks.py → export_numbers.py → make_charts.py → build_report.py</code>. See <a href="README.md">README.md</a> for the step-by-step explanation.</p>
+<p><b>Split-half (2022–24 vs 2025–26).</b> The headline names survive the split. Dhir: 210.0 → 227.8. Tim David: 184.6 → 206.3. Shreyas: 151.9 → 213.5. Theekshana: 7.10 → 7.03. Narine: 6.50 → 6.53. Bumrah: 7.32 → 7.61. The names that do not survive it are flagged, not hidden: Suryakumar (223.1 → 174.2), Stubbs (200.9 → 154.3), Pathirana (7.12 → 9.74), Kuldeep Yadav (6.86 → 9.42 — which is why Kuldeep, pure-rating No. 11 among bowlers, does not make the Top 10).</p>
+<p><b>IPL vs T20I.</b> Every Top 10 player has his IPL-only pressure number printed above. The Final Score weights IPL evidence at 25% precisely because T20I opposition is weaker (par SR is lower in every subtype) and because some T20I stars never face IPL pressure.</p>
+<p><b>Consistency.</b> Dhir 83%, Narine 79%, Hosein 79%, Theekshana 73%, SKY 69%, Livingstone 70% — the Top 10 are not one-innings wonders. The lowest consistency in either Top 10 is Jacks (43%) and Bosch (54%), both flagged in their profiles.</p>
+<p><b>Limitations.</b> Pressure is defined, not discovered — a different definition would shuffle the middle of the rankings, though the top names are robust. Sample sizes are small for some finalists (Jacks 75 pressure balls, Bosch 127, Coetzee 118) — treat their ranks as ±3, not exact. Availability is as of the data pack; retention decisions for IPL 2027 are not in it. What the data cannot see: fitness, form after 1 November 2026, price, auction dynamics, and team balance beyond the overseas cap.</p>
 </div>
+
+<h2>The journey</h2>
+<div class="card">
+<p id="journey">Honestly, when I first saw the Round 1 challenge, I had no idea where to start. 883 matches, almost two lakh balls, it was a lot. So I began with the most basic question: what even counts as pressure? I wrote five rules for it. Death overs, tight finishes, a high required run rate late in a chase, collapses, and knockout games. That gave me around 42,000 pressure balls, roughly one in every five. I was careful not to compare raw numbers, because a collapse and a death over are not the same thing. So I scored every player against the par for the exact situations he faced, and built one Final Score from that, with extra weight on IPL games and recent form. My favourite pick is Naman Dhir. 224 strike rate under pressure, 69 above par, the best in the whole data. The moment that stayed with me: Akeal Hosein looked like the number one bowler on raw numbers, but once I weighted the IPL evidence he fell to 12th. Only 16 of his 162 pressure balls were even in the IPL. That was the whole lesson for me. The best player on paper is not always the best player when it actually matters.</p>
+<button class="copybtn" onclick="copyJourney(this)">Copy journey text</button>
+</div>
+
+<h2>Submission checklist — for Unstop</h2>
+<div class="card">
+<p><b>Batters, Rank 1–10:</b> Naman Dhir, Suryakumar Yadav, Shreyas Iyer, Tim David, Jos Buttler, Liam Livingstone, William Jacks, Marcus Stoinis, Rinku Singh, Nicholas Pooran.</p>
+<p><b>Bowlers, Rank 1–10:</b> Jasprit Bumrah, Maheesh Theekshana, Matheesha Pathirana, Sunil Narine, Noor Ahmad, Mustafizur Rahman, Corbin Bosch, Gerald Coetzee, Varun Chakravarthy, Eshan Malinga.</p>
+<button class="copybtn" onclick="copyLists(this)">Copy both Top 10 lists</button>
+<p class="note">Upload the methodology report as the PDF. Deadline: 18 November 2026, 11:59 PM IST.</p>
+</div>
+
+<h2>The complete code</h2>
+<div class="card">
+<p>Every number on this page was computed from the official data pack by the Python pipeline below. Run the scripts in order: <code>analyze.py → analyze2.py → analyze3.py → rank.py → blend.py → checks.py</code>. The full repo, including the report builder and computed data, is at <a href="https://github.com/Aman05cody/superr-selector-round-1">github.com/Aman05cody/superr-selector-round-1</a>.</p>
+<button class="copybtn" onclick="copyAllCode(this)">Copy all code</button>
+</div>
+<details><summary>analyze.py <span class="sub">— click to expand</span></summary><button class="copybtn" onclick="copyCode(this)">Copy analyze.py</button><pre>import pandas as pd, numpy as np
+
+b = pd.read_csv(&quot;Data Pack/ball_by_ball.csv&quot;, low_memory=False)
+m = pd.read_csv(&quot;Data Pack/matches.csv&quot;, parse_dates=[&quot;match_date&quot;])
+comp = pd.read_csv(&quot;Data Pack/competitions.csv&quot;)
+# keep innings 1-2 only (exclude super overs: 38 balls)
+b = b[b[&#x27;innings&#x27;].isin([1,2])].copy()
+b[&#x27;total_runs_ball&#x27;] = b[&#x27;runs&#x27;] + b[&#x27;extras1_runs&#x27;] + b[&#x27;extras_2_runs&#x27;]
+b[&#x27;is_wide&#x27;] = (b[&#x27;extras_type&#x27;]==&#x27;wide&#x27;)
+b[&#x27;is_legal&#x27;] = ~b[&#x27;is_wide&#x27;]   # legal ball for batter/bowler counting
+b[&#x27;bowler_runs&#x27;] = b[&#x27;runs&#x27;] + np.where(b[&#x27;extras_type&#x27;].isin([&#x27;wide&#x27;,&#x27;Overstep&#x27;]), b[&#x27;extras1_runs&#x27;]+b[&#x27;extras_2_runs&#x27;], 0)
+# bowler wicket: bowler credited unless RunOut / Retire / Obstructing
+b[&#x27;bowler_wkt&#x27;] = b[&#x27;is_wicket&#x27;] &amp; (~b[&#x27;dismissal_type&#x27;].isin([&#x27;RunOut&#x27;,&#x27;Retire Out&#x27;,&#x27;Obstracting the field&#x27;,&#x27;Obstructing the field&#x27;]))
+b[&#x27;batter_out&#x27;] = b[&#x27;is_wicket&#x27;] &amp; (b[&#x27;dismissed_player_id&#x27;]==b[&#x27;striker_id&#x27;])
+# sort for cumulative context
+b = b.sort_values([&#x27;match_id&#x27;,&#x27;innings&#x27;,&#x27;innings_ball_num&#x27;]).reset_index(drop=True)
+# first innings total per match
+first_tot = b[b[&#x27;innings&#x27;]==1].groupby(&#x27;match_id&#x27;)[&#x27;total_runs_ball&#x27;].sum().rename(&#x27;first_inn_total&#x27;)
+b = b.merge(first_tot, on=&#x27;match_id&#x27;, how=&#x27;left&#x27;)
+b[&#x27;target&#x27;] = b[&#x27;first_inn_total&#x27;] + 1
+# cumulative before ball: per match+innings
+b[&#x27;cum_runs_before&#x27;] = b.groupby([&#x27;match_id&#x27;,&#x27;innings&#x27;])[&#x27;total_runs_ball&#x27;].cumsum() - b[&#x27;total_runs_ball&#x27;]
+b[&#x27;cum_wk_before&#x27;] = b.groupby([&#x27;match_id&#x27;,&#x27;innings&#x27;])[&#x27;is_wicket&#x27;].cumsum() - b[&#x27;is_wicket&#x27;]
+# legal balls before (approx: innings_ball_num is delivery count incl wides? use overid)
+b[&#x27;over_num&#x27;] = b[&#x27;overid&#x27;]  # 1..20
+# balls remaining (legal balls): 120 - legal balls bowled before. Approx via innings_ball_num is messy with wides; use count of legal balls before
+b[&#x27;legal_before&#x27;] = b.groupby([&#x27;match_id&#x27;,&#x27;innings&#x27;])[&#x27;is_legal&#x27;].cumsum() - b[&#x27;is_legal&#x27;].astype(int)
+b[&#x27;balls_remaining&#x27;] = 120 - b[&#x27;legal_before&#x27;]
+b[&#x27;runs_needed&#x27;] = np.where(b[&#x27;innings&#x27;]==2, b[&#x27;target&#x27;] - b[&#x27;cum_runs_before&#x27;], np.nan)
+b[&#x27;rrr&#x27;] = np.where((b[&#x27;innings&#x27;]==2)&amp;(b[&#x27;balls_remaining&#x27;]&gt;0), b[&#x27;runs_needed&#x27;]/(b[&#x27;balls_remaining&#x27;]/6.0), np.nan)
+b[&#x27;wkts_down&#x27;] = b[&#x27;cum_wk_before&#x27;]
+b[&#x27;wkts_in_hand&#x27;] = 10 - b[&#x27;cum_wk_before&#x27;]
+# knockout flag
+ko = m.set_index(&#x27;match_id&#x27;)[&#x27;knock_out&#x27;].to_dict()
+stage = m.set_index(&#x27;match_id&#x27;)[&#x27;stage&#x27;].to_dict()
+b[&#x27;knock_out&#x27;] = b[&#x27;match_id&#x27;].map(ko).fillna(0)
+b[&#x27;stage&#x27;] = b[&#x27;match_id&#x27;].map(stage)
+b[&#x27;is_ipl&#x27;] = b[&#x27;match_id&#x27;].map(m.set_index(&#x27;match_id&#x27;)[&#x27;comp_id&#x27;]).isin(comp[comp[&#x27;comp_name&#x27;].str.startswith(&#x27;IPL &#x27;)][&#x27;comp_id&#x27;])
+# PRESSURE DEFINITION (transparent, same balls for bat &amp; ball)
+# A death overs 17-20 | B high-RRR chase RRR&gt;=9 | C tight finish: &lt;=36 balls left, 1-45 needed | D collapse: &gt;=4 wkts down before over 12
+b[&#x27;p_death&#x27;] = b[&#x27;over_num&#x27;]&gt;=17
+b[&#x27;p_rrr&#x27;] = (b[&#x27;innings&#x27;]==2) &amp; (b[&#x27;rrr&#x27;]&gt;=9.0)
+b[&#x27;p_tight&#x27;] = (b[&#x27;innings&#x27;]==2) &amp; (b[&#x27;balls_remaining&#x27;]&lt;=36) &amp; (b[&#x27;runs_needed&#x27;]&gt;=1) &amp; (b[&#x27;runs_needed&#x27;]&lt;=45)
+b[&#x27;p_collapse&#x27;] = (b[&#x27;wkts_down&#x27;]&gt;=4) &amp; (b[&#x27;over_num&#x27;]&lt;=12)
+b[&#x27;pressure&#x27;] = b[&#x27;p_death&#x27;] | b[&#x27;p_rrr&#x27;] | b[&#x27;p_tight&#x27;] | b[&#x27;p_collapse&#x27;]
+b[&#x27;pressure_reason&#x27;] = np.where(b[&#x27;p_death&#x27;],&#x27;death&#x27;,np.where(b[&#x27;p_rrr&#x27;],&#x27;rrr&#x27;,np.where(b[&#x27;p_tight&#x27;],&#x27;tight&#x27;,np.where(b[&#x27;p_collapse&#x27;],&#x27;collapse&#x27;,&#x27;none&#x27;))))
+print(&quot;Total legal balls:&quot;, b[&#x27;is_legal&#x27;].sum(), &quot;pressure legal balls:&quot;, (b[&#x27;pressure&#x27;]&amp;b[&#x27;is_legal&#x27;]).sum(), &quot;share:&quot;, round((b[&#x27;pressure&#x27;]&amp;b[&#x27;is_legal&#x27;]).mean(),3))
+print(&quot;Pressure by reason (legal balls):&quot;)
+print(b[b[&#x27;is_legal&#x27;]].groupby(&#x27;pressure_reason&#x27;).size())
+print(&quot;Pressure by innings:&quot;, b[b[&#x27;is_legal&#x27;]].groupby([&#x27;innings&#x27;,&#x27;pressure&#x27;]).size())
+print(&quot;Pressure by IPL/T20I:&quot;, b[b[&#x27;is_legal&#x27;]].groupby([&#x27;is_ipl&#x27;,&#x27;pressure&#x27;]).size())
+print(&quot;Knockout balls:&quot;, b[&#x27;knock_out&#x27;].sum(), &quot;knockout pressure share:&quot;, b[b[&#x27;knock_out&#x27;]==1][&#x27;pressure&#x27;].mean())
+b.to_pickle(&quot;balls_enriched.pkl&quot;)
+print(&quot;saved balls_enriched.pkl&quot;, len(b))
+</pre></details>
+<details><summary>analyze2.py <span class="sub">— click to expand</span></summary><button class="copybtn" onclick="copyCode(this)">Copy analyze2.py</button><pre>import pandas as pd, numpy as np
+b=pd.read_pickle(&quot;balls_enriched.pkl&quot;)
+# --- PRESSURE v2 ---
+b[&#x27;pressure&#x27;] = (
+  ((b[&#x27;over_num&#x27;]&gt;=18)&amp;(b[&#x27;innings&#x27;]==2)) |
+  ((b[&#x27;over_num&#x27;]&gt;=19)&amp;(b[&#x27;innings&#x27;]==1)) |
+  ((b[&#x27;innings&#x27;]==2)&amp;(b[&#x27;balls_remaining&#x27;]&lt;=30)&amp;(b[&#x27;runs_needed&#x27;]&gt;=1)&amp;(b[&#x27;runs_needed&#x27;]&lt;=36)) |
+  ((b[&#x27;innings&#x27;]==2)&amp;(b[&#x27;over_num&#x27;]&gt;=13)&amp;(b[&#x27;rrr&#x27;]&gt;=10)) |
+  ((b[&#x27;wkts_down&#x27;]&gt;=4)&amp;(b[&#x27;over_num&#x27;]&lt;=10)) |
+  ((b[&#x27;knock_out&#x27;]==1)&amp;(b[&#x27;over_num&#x27;]&gt;=17))
+)
+b[&#x27;pressure&#x27;] = b[&#x27;pressure&#x27;].fillna(False)
+legal = b[b[&#x27;is_legal&#x27;]].copy()
+print(&quot;pressure share legal:&quot;, round(legal[&#x27;pressure&#x27;].mean(),3), legal[&#x27;pressure&#x27;].sum(), &quot;of&quot;, len(legal))
+# season per match
+m=pd.read_csv(&quot;Data Pack/matches.csv&quot;)
+comp=pd.read_csv(&quot;Data Pack/competitions.csv&quot;)
+season_map = m.set_index(&#x27;match_id&#x27;)[&#x27;comp_id&#x27;].map(comp.set_index(&#x27;comp_id&#x27;)[&#x27;season&#x27;]).to_dict()
+legal[&#x27;season&#x27;] = legal[&#x27;match_id&#x27;].map(season_map)
+legal[&#x27;match_inn&#x27;] = legal[&#x27;match_id&#x27;].astype(str)+&quot;_&quot;+legal[&#x27;innings&#x27;].astype(str)
+
+def bat_stats(df):
+    g=df.groupby([&#x27;striker_id&#x27;,&#x27;striker_name&#x27;])
+    rows=[]
+    for (pid,name), d in g:
+        tot=d; pr=d[d[&#x27;pressure&#x27;]]; base=d[~d[&#x27;pressure&#x27;]]
+        def s(x):
+            balls=len(x); runs=x[&#x27;runs&#x27;].sum(); outs=x[&#x27;batter_out&#x27;].sum()
+            return balls, runs, outs, (runs/balls*100 if balls else 0), (runs/outs if outs else np.nan), ((x[&#x27;is_four&#x27;]|x[&#x27;is_six&#x27;]).mean()*100 if balls else 0), ((x[&#x27;runs&#x27;]==0).mean()*100 if balls else 0)
+        tb,tr,to,tsr,tavg,tbnd,tdot=s(tot); pb,pr_,po,psr,pavg,pbnd,pdot=s(pr); bb,br,bo,bsr,bavg,bbnd,bdot=s(base)
+        # pressure innings
+        pi = pr[&#x27;match_inn&#x27;].nunique(); ti = tot[&#x27;match_inn&#x27;].nunique()
+        # consistency: pressure innings with &gt;=5 pressure balls and SR&gt;=120 or 15+ runs
+        good=0; pin_n=0
+        for _,x in pr.groupby(&#x27;match_inn&#x27;):
+            if len(x)&gt;=5:
+                pin_n+=1
+                if x[&#x27;runs&#x27;].sum()&gt;=15 and (x[&#x27;runs&#x27;].sum()/len(x)*100&gt;=120): good+=1
+        cons = good/pin_n*100 if pin_n else 0
+        ipl_pr = pr[&#x27;is_ipl&#x27;].sum(); ipl_tot = tot[&#x27;is_ipl&#x27;].sum()
+        seasons = tot[&#x27;season&#x27;].nunique()
+        rows.append(dict(pid=pid,name=name,tot_balls=tb,tot_runs=tr,tot_outs=to,tot_sr=tsr,tot_avg=tavg,
+            pr_balls=pb,pr_runs=pr_,pr_outs=po,pr_sr=psr,pr_avg=pavg,pr_bnd=pbnd,pr_dot=pdot,
+            base_sr=bsr,base_avg=bavg,uplift=psr-bsr,pr_inn=pi,tot_inn=ti,cons=cons,good_inn=good,pin_n=pin_n,
+            ipl_pr_balls=ipl_pr,ipl_tot_balls=ipl_tot,seasons=seasons))
+    return pd.DataFrame(rows)
+
+def bowl_stats(df):
+    g=df.groupby([&#x27;bowler_id&#x27;,&#x27;bowler_name&#x27;])
+    rows=[]
+    for (pid,name), d in g:
+        tot=d; pr=d[d[&#x27;pressure&#x27;]]; base=d[~d[&#x27;pressure&#x27;]]
+        def s(x):
+            balls=len(x); runs=x[&#x27;bowler_runs&#x27;].sum(); wk=x[&#x27;bowler_wkt&#x27;].sum()
+            econ=runs/balls*6 if balls else 0; avg=runs/wk if wk else np.nan; sr=balls/wk if wk else np.nan
+            return balls,runs,wk,econ,avg,sr,((x[&#x27;runs&#x27;]==0)&amp;(x[&#x27;bowler_runs&#x27;]==0)).mean()*100 if balls else 0, ((x[&#x27;is_four&#x27;]|x[&#x27;is_six&#x27;]).mean()*100 if balls else 0)
+        tb,tr,tw,te,ta,ts,tdot,tbnd=s(tot); pb,pr_,pw,pe,pa,ps,pdot,pbnd=s(pr); bb,br,bw,be,ba,bs,bdot,bbnd=s(base)
+        pi=pr[&#x27;match_inn&#x27;].nunique()
+        good=0; pin_n=0
+        for _,x in pr.groupby(&#x27;match_inn&#x27;):
+            if len(x)&gt;=6:
+                pin_n+=1
+                if x[&#x27;bowler_runs&#x27;].sum()/len(x)*6&lt;=8.0: good+=1
+        cons=good/pin_n*100 if pin_n else 0
+        rows.append(dict(pid=pid,name=name,tot_balls=tb,tot_runs=tr,tot_wk=tw,tot_econ=te,tot_avg=ta,tot_sr=ts,
+            pr_balls=pb,pr_runs=pr_,pr_wk=pw,pr_econ=pe,pr_avg=pa,pr_sr=ps,pr_dot=pdot,pr_bnd=pbnd,
+            base_econ=be,econ_gain=be-pe,wk_rate=pw/pb*24 if pb else 0,pr_inn=pi,cons=cons,good_inn=good,pin_n=pin_n,
+            ipl_pr_balls=pr[&#x27;is_ipl&#x27;].sum(),ipl_tot_balls=tot[&#x27;is_ipl&#x27;].sum(),seasons=tot[&#x27;season&#x27;].nunique(),
+            pace_spin=tot[&#x27;pace_or_spin&#x27;].mode().iloc[0] if len(tot) else &#x27;&#x27;, bowl_type=tot[&#x27;bowling_type&#x27;].mode().iloc[0] if len(tot) else &#x27;&#x27;))
+    return pd.DataFrame(rows)
+
+bat=bat_stats(legal); bowl=bowl_stats(legal)
+bat.to_csv(&quot;bat_stats.csv&quot;,index=False); bowl.to_csv(&quot;bowl_stats.csv&quot;,index=False)
+print(&quot;\nBAT eligible &gt;=70 pr balls, &gt;=300 tot, &gt;=10 pr inn:&quot;)
+e=bat[(bat.pr_balls&gt;=70)&amp;(bat.tot_balls&gt;=300)&amp;(bat.pr_inn&gt;=10)]
+print(len(e),&quot;eligible&quot;)
+print(e.sort_values(&#x27;pr_sr&#x27;,ascending=False)[[&#x27;name&#x27;,&#x27;pr_balls&#x27;,&#x27;pr_runs&#x27;,&#x27;pr_outs&#x27;,&#x27;pr_sr&#x27;,&#x27;pr_avg&#x27;,&#x27;base_sr&#x27;,&#x27;uplift&#x27;,&#x27;pr_bnd&#x27;,&#x27;cons&#x27;,&#x27;ipl_pr_balls&#x27;,&#x27;seasons&#x27;]].head(25).to_string(index=False))
+print(&quot;\nBOWL eligible &gt;=70 pr balls, &gt;=300 tot, &gt;=10 pr inn:&quot;)
+eb=bowl[(bowl.pr_balls&gt;=70)&amp;(bowl.tot_balls&gt;=300)&amp;(bowl.pr_inn&gt;=10)]
+print(len(eb),&quot;eligible&quot;)
+print(eb.sort_values(&#x27;pr_econ&#x27;)[[&#x27;name&#x27;,&#x27;pr_balls&#x27;,&#x27;pr_wk&#x27;,&#x27;pr_econ&#x27;,&#x27;base_econ&#x27;,&#x27;econ_gain&#x27;,&#x27;pr_avg&#x27;,&#x27;wk_rate&#x27;,&#x27;pr_dot&#x27;,&#x27;cons&#x27;,&#x27;ipl_pr_balls&#x27;,&#x27;pace_spin&#x27;]].head(25).to_string(index=False))
+b.to_pickle(&quot;balls_v2.pkl&quot;)
+</pre></details>
+<details><summary>analyze3.py <span class="sub">— click to expand</span></summary><button class="copybtn" onclick="copyCode(this)">Copy analyze3.py</button><pre>import pandas as pd, numpy as np
+b=pd.read_pickle(&quot;balls_v2.pkl&quot;)
+legal=b[b[&#x27;is_legal&#x27;]].copy()
+# subtype priority: tight &gt; death &gt; lateRRR &gt; collapse &gt; KOdeath &gt; none ; death = over&gt;=18 inn2 or &gt;=19 inn1
+def subtype(row):
+    if not row[&#x27;pressure&#x27;]: return &#x27;non-pressure&#x27;
+    if row[&#x27;innings&#x27;]==2 and row[&#x27;balls_remaining&#x27;]&lt;=30 and 1&lt;=row[&#x27;runs_needed&#x27;]&lt;=36: return &#x27;tight-finish&#x27;
+    if (row[&#x27;innings&#x27;]==2 and row[&#x27;over_num&#x27;]&gt;=18) or (row[&#x27;innings&#x27;]==1 and row[&#x27;over_num&#x27;]&gt;=19): return &#x27;death&#x27;
+    if row[&#x27;innings&#x27;]==2 and row[&#x27;over_num&#x27;]&gt;=13 and row[&#x27;rrr&#x27;]&gt;=10: return &#x27;late-high-RRR&#x27;
+    if row[&#x27;wkts_down&#x27;]&gt;=4 and row[&#x27;over_num&#x27;]&lt;=10: return &#x27;collapse&#x27;
+    if row[&#x27;knock_out&#x27;]==1 and row[&#x27;over_num&#x27;]&gt;=17: return &#x27;knockout-death&#x27;
+    return &#x27;pressure-other&#x27;
+legal[&#x27;subtype&#x27;]=legal.apply(subtype,axis=1)
+print(legal.groupby([&#x27;subtype&#x27;,&#x27;is_ipl&#x27;]).size())
+# par per subtype x format: batting SR, bowling econ
+par = legal[legal[&#x27;pressure&#x27;]].groupby([&#x27;subtype&#x27;,&#x27;is_ipl&#x27;]).agg(balls=(&#x27;runs&#x27;,&#x27;size&#x27;), bat_runs=(&#x27;runs&#x27;,&#x27;sum&#x27;), bowl_runs=(&#x27;bowler_runs&#x27;,&#x27;sum&#x27;), wk=(&#x27;bowler_wkt&#x27;,&#x27;sum&#x27;))
+par[&#x27;par_sr&#x27;]=par[&#x27;bat_runs&#x27;]/par[&#x27;balls&#x27;]*100
+par[&#x27;par_econ&#x27;]=par[&#x27;bowl_runs&#x27;]/par[&#x27;balls&#x27;]*6
+par[&#x27;par_wk_rate&#x27;]=par[&#x27;wk&#x27;]/par[&#x27;balls&#x27;]*24
+print(par.to_string())
+par.to_csv(&quot;par_subtype_format.csv&quot;)
+legal.to_pickle(&quot;balls_v3.pkl&quot;)
+
+# attach par to each ball
+par_sr = par[&#x27;par_sr&#x27;].to_dict(); par_ec = par[&#x27;par_econ&#x27;].to_dict()
+legal[&#x27;par_sr&#x27;] = [par_sr.get((s,f), np.nan) for s,f in zip(legal[&#x27;subtype&#x27;], legal[&#x27;is_ipl&#x27;])]
+legal[&#x27;par_econ&#x27;] = [par_ec.get((s,f), np.nan) for s,f in zip(legal[&#x27;subtype&#x27;], legal[&#x27;is_ipl&#x27;])]
+legal[&#x27;exp_runs_bat&#x27;] = legal[&#x27;par_sr&#x27;]/100  # expected batter runs per ball in that context
+legal[&#x27;exp_runs_bowl&#x27;] = legal[&#x27;par_econ&#x27;]/6
+legal.to_pickle(&quot;balls_v3.pkl&quot;)
+
+bat=pd.read_csv(&quot;bat_stats.csv&quot;); bowl=pd.read_csv(&quot;bowl_stats.csv&quot;)
+# last season + IPL totals per player
+m=pd.read_csv(&quot;Data Pack/matches.csv&quot;); comp=pd.read_csv(&quot;Data Pack/competitions.csv&quot;)
+season_map=m.set_index(&#x27;match_id&#x27;)[&#x27;comp_id&#x27;].map(comp.set_index(&#x27;comp_id&#x27;)[&#x27;season&#x27;]).to_dict()
+legal[&#x27;season&#x27;]=legal[&#x27;match_id&#x27;].map(season_map)
+legal[&#x27;match_inn&#x27;]=legal[&#x27;match_id&#x27;].astype(str)+&#x27;_&#x27;+legal[&#x27;innings&#x27;].astype(str)
+for df, idcol, namecol in [(bat,&#x27;pid&#x27;,&#x27;name&#x27;),(bowl,&#x27;pid&#x27;,&#x27;name&#x27;)]:
+    pass
+# compute adjusted metrics per batter
+def adj_bat(df):
+    out=[]
+    for (pid,name), d in df.groupby([&#x27;striker_id&#x27;,&#x27;striker_name&#x27;]):
+        pr=d[d[&#x27;pressure&#x27;]]
+        if len(pr)==0: continue
+        exp_sr = (pr[&#x27;par_sr&#x27;]/100*1)  # per ball expected runs
+        # expected SR given mix = total expected runs / balls *100
+        exp_runs = pr[&#x27;par_sr&#x27;].sum()/100
+        adj_sr = pr[&#x27;runs&#x27;].sum()/len(pr)*100 - exp_runs/len(pr)*100  # player SR minus mix-expected SR
+        # also pressure SR
+        out.append(dict(pid=pid,name=name,pr_balls=len(pr),pr_runs=pr[&#x27;runs&#x27;].sum(),pr_sr=pr[&#x27;runs&#x27;].sum()/len(pr)*100,
+                       exp_sr=exp_runs/len(pr)*100, adj_sr=adj_sr, last_season=pr[&#x27;season&#x27;].max(), tot_last=d[&#x27;season&#x27;].max(),
+                       ipl_pr=(pr[&#x27;is_ipl&#x27;]).sum(), pr_inn=pr[&#x27;match_inn&#x27;].nunique()))
+    return pd.DataFrame(out)
+def adj_bowl(df):
+    out=[]
+    for (pid,name), d in df.groupby([&#x27;bowler_id&#x27;,&#x27;bowler_name&#x27;]):
+        pr=d[d[&#x27;pressure&#x27;]]
+        if len(pr)==0: continue
+        exp_econ = pr[&#x27;par_econ&#x27;].mean()  # approx weighted by balls (each ball equal) -&gt; mean par econ
+        # weighted expected econ = sum(par_econ/6)/balls*6 = mean par_econ
+        pecon = pr[&#x27;bowler_runs&#x27;].sum()/len(pr)*6
+        out.append(dict(pid=pid,name=name,pr_balls=len(pr),pr_runs=pr[&#x27;bowler_runs&#x27;].sum(),pr_wk=pr[&#x27;bowler_wkt&#x27;].sum(),pr_econ=pecon,
+                       exp_econ=exp_econ, adj_econ=pecon-exp_econ, last_season=pr[&#x27;season&#x27;].max(), tot_last=d[&#x27;season&#x27;].max(),
+                       ipl_pr=(pr[&#x27;is_ipl&#x27;]).sum(), pr_inn=pr[&#x27;match_inn&#x27;].nunique()))
+    return pd.DataFrame(out)
+
+ab=adj_bat(legal); aw=adj_bowl(legal)
+ab.to_csv(&quot;bat_adj.csv&quot;,index=False); aw.to_csv(&quot;bowl_adj.csv&quot;,index=False)
+# merge with bat_stats
+bat2=bat.merge(ab[[&#x27;pid&#x27;,&#x27;exp_sr&#x27;,&#x27;adj_sr&#x27;,&#x27;last_season&#x27;,&#x27;tot_last&#x27;]], on=&#x27;pid&#x27;, how=&#x27;left&#x27;, suffixes=(&#x27;&#x27;,&#x27;_adj&#x27;))
+bowl2=bowl.merge(aw[[&#x27;pid&#x27;,&#x27;exp_econ&#x27;,&#x27;adj_econ&#x27;,&#x27;last_season&#x27;,&#x27;tot_last&#x27;]], on=&#x27;pid&#x27;, how=&#x27;left&#x27;, suffixes=(&#x27;&#x27;,&#x27;_adj&#x27;))
+bat2.to_csv(&quot;bat_stats2.csv&quot;,index=False); bowl2.to_csv(&quot;bowl_stats2.csv&quot;,index=False)
+print(&quot;\nBAT adj_sr top (eligible gates):&quot;)
+e=bat2[(bat2.pr_balls&gt;=70)&amp;(bat2.tot_balls&gt;=300)&amp;(bat2.pr_inn&gt;=10)]
+print(e.sort_values(&#x27;adj_sr&#x27;,ascending=False)[[&#x27;name&#x27;,&#x27;pr_balls&#x27;,&#x27;pr_sr&#x27;,&#x27;exp_sr&#x27;,&#x27;adj_sr&#x27;,&#x27;uplift&#x27;,&#x27;pr_avg&#x27;,&#x27;cons&#x27;,&#x27;ipl_pr_balls&#x27;,&#x27;seasons&#x27;,&#x27;tot_last&#x27;]].head(30).to_string(index=False))
+print(&quot;\nBOWL adj_econ top (eligible gates):&quot;)
+eb=bowl2[(bowl2.pr_balls&gt;=70)&amp;(bowl2.tot_balls&gt;=300)&amp;(bowl2.pr_inn&gt;=10)]
+print(eb.sort_values(&#x27;adj_econ&#x27;)[[&#x27;name&#x27;,&#x27;pr_balls&#x27;,&#x27;pr_econ&#x27;,&#x27;exp_econ&#x27;,&#x27;adj_econ&#x27;,&#x27;econ_gain&#x27;,&#x27;pr_wk&#x27;,&#x27;wk_rate&#x27;,&#x27;pr_dot&#x27;,&#x27;cons&#x27;,&#x27;ipl_pr_balls&#x27;,&#x27;pace_spin&#x27;,&#x27;tot_last&#x27;]].head(30).to_string(index=False))
+</pre></details>
+<details><summary>rank.py <span class="sub">— click to expand</span></summary><button class="copybtn" onclick="copyCode(this)">Copy rank.py</button><pre>import pandas as pd, numpy as np
+bat=pd.read_csv(&quot;bat_stats2.csv&quot;); bowl=pd.read_csv(&quot;bowl_stats2.csv&quot;)
+# pakistan players (IPL-ineligible) - by name, verify via teams? hardcode from knowledge, cross-check with T20I teams
+PAK = {&quot;Babar Azam&quot;,&quot;Shaheen Afridi&quot;,&quot;Abrar Ahmed&quot;,&quot;Mohammad Nawaz&quot;,&quot;Mohammad Wasim&quot;,&quot;Abbas Afridi&quot;,&quot;Fakhar Zaman&quot;,&quot;Saim Ayub&quot;,&quot;Sufiyan Muqeem&quot;,&quot;Mohammad Rizwan&quot;,&quot;Haris Rauf&quot;,&quot;Naseem Shah&quot;,&quot;Shadab Khan&quot;,&quot;Iftikhar Ahmed&quot;,&quot;Salman Mirza&quot;,&quot;Usman Khan&quot;,&quot;Mohammad Haris&quot;,&quot;Azam Khan&quot;}
+RR_CORE = {&quot;Sanju Samson&quot;,&quot;Yashasvi Jaiswal&quot;,&quot;Riyan Parag&quot;,&quot;Dhruv Jurel&quot;,&quot;Shimron Hetmyer&quot;,&quot;Jofra Archer&quot;,&quot;Sandeep Sharma&quot;,&quot;Tushar Deshpande&quot;,&quot;Wanindu Hasaranga&quot;,&quot;Maheesh Theekshana&quot;}
+# note Theekshana was RR 2025-26? He played for RR in 2025. Check later; keep flag only Samson for now in final filter, others noted
+def norm(s, higher_better=True):
+    s=s.astype(float)
+    lo,hi=s.quantile(0.02), s.quantile(0.98)
+    x=(s-lo)/(hi-lo)*100
+    x=x.clip(0,100)
+    return x if higher_better else 100-x
+
+def bat_rating(df):
+    e=df[(df.pr_balls&gt;=70)&amp;(df.tot_balls&gt;=300)&amp;(df.pr_inn&gt;=10)].copy()
+    e[&#x27;n_adj&#x27;]=norm(e[&#x27;adj_sr&#x27;],True); e[&#x27;n_sr&#x27;]=norm(e[&#x27;pr_sr&#x27;],True); e[&#x27;n_cons&#x27;]=e[&#x27;cons&#x27;].clip(0,100)
+    e[&#x27;n_uplift&#x27;]=norm(e[&#x27;uplift&#x27;],True); e[&#x27;n_vol&#x27;]=norm(np.log(e[&#x27;pr_balls&#x27;]),True)
+    e[&#x27;n_avg&#x27;]=norm(e[&#x27;pr_avg&#x27;].fillna(e[&#x27;pr_avg&#x27;].median()).clip(upper=60),True)
+    e[&#x27;rating&#x27;]=0.40*e[&#x27;n_adj&#x27;]+0.20*e[&#x27;n_sr&#x27;]+0.15*e[&#x27;n_cons&#x27;]+0.10*e[&#x27;n_uplift&#x27;]+0.10*e[&#x27;n_vol&#x27;]+0.05*e[&#x27;n_avg&#x27;]
+    return e.sort_values(&#x27;rating&#x27;,ascending=False)
+def bowl_rating(df):
+    e=df[(df.pr_balls&gt;=70)&amp;(df.tot_balls&gt;=300)&amp;(df.pr_inn&gt;=10)].copy()
+    e[&#x27;n_adj&#x27;]=norm(e[&#x27;adj_econ&#x27;],False); e[&#x27;n_econ&#x27;]=norm(e[&#x27;pr_econ&#x27;],False); e[&#x27;n_wk&#x27;]=norm(e[&#x27;wk_rate&#x27;],True)
+    e[&#x27;n_cons&#x27;]=e[&#x27;cons&#x27;].clip(0,100); e[&#x27;n_vol&#x27;]=norm(np.log(e[&#x27;pr_balls&#x27;]),True); e[&#x27;n_dot&#x27;]=norm(e[&#x27;pr_dot&#x27;],True)
+    e[&#x27;rating&#x27;]=0.40*e[&#x27;n_adj&#x27;]+0.15*e[&#x27;n_econ&#x27;]+0.20*e[&#x27;n_wk&#x27;]+0.10*e[&#x27;n_cons&#x27;]+0.10*e[&#x27;n_vol&#x27;]+0.05*e[&#x27;n_dot&#x27;]
+    return e.sort_values(&#x27;rating&#x27;,ascending=False)
+
+br=bat_rating(bat); wr=bowl_rating(bowl)
+br.to_csv(&quot;bat_ranked.csv&quot;,index=False); wr.to_csv(&quot;bowl_ranked.csv&quot;,index=False)
+pd.set_option(&#x27;display.width&#x27;,250)
+print(&quot;=== BAT composite top 25 (all eligible) ===&quot;)
+print(br[[&#x27;name&#x27;,&#x27;rating&#x27;,&#x27;pr_balls&#x27;,&#x27;pr_runs&#x27;,&#x27;pr_sr&#x27;,&#x27;adj_sr&#x27;,&#x27;uplift&#x27;,&#x27;pr_avg&#x27;,&#x27;cons&#x27;,&#x27;ipl_pr_balls&#x27;,&#x27;tot_last&#x27;]].head(25).round(1).to_string(index=False))
+print(&quot;\n=== BOWL composite top 25 (all eligible) ===&quot;)
+print(wr[[&#x27;name&#x27;,&#x27;rating&#x27;,&#x27;pr_balls&#x27;,&#x27;pr_wk&#x27;,&#x27;pr_econ&#x27;,&#x27;adj_econ&#x27;,&#x27;wk_rate&#x27;,&#x27;pr_dot&#x27;,&#x27;cons&#x27;,&#x27;ipl_pr_balls&#x27;,&#x27;pace_spin&#x27;,&#x27;tot_last&#x27;]].head(25).round(2).to_string(index=False))
+print(&quot;\n=== BAT filtered: active&gt;=2025, not PAK, not Samson ===&quot;)
+f=br[(pd.to_numeric(br.tot_last, errors=&#x27;coerce&#x27;)&gt;=2025)&amp;(~br.name.isin(PAK))&amp;(~br.name.isin([&quot;Sanju Samson&quot;,&quot;Dinesh Karthik&quot;]))]
+print(f[[&#x27;name&#x27;,&#x27;rating&#x27;,&#x27;pr_balls&#x27;,&#x27;pr_runs&#x27;,&#x27;pr_sr&#x27;,&#x27;adj_sr&#x27;,&#x27;uplift&#x27;,&#x27;pr_avg&#x27;,&#x27;cons&#x27;,&#x27;ipl_pr_balls&#x27;,&#x27;tot_last&#x27;]].head(15).round(1).to_string(index=False))
+print(&quot;\n=== BOWL filtered: active&gt;=2025, not PAK ===&quot;)
+fw=wr[(pd.to_numeric(wr.tot_last, errors=&#x27;coerce&#x27;)&gt;=2025)&amp;(~wr.name.isin(PAK))]
+print(fw[[&#x27;name&#x27;,&#x27;rating&#x27;,&#x27;pr_balls&#x27;,&#x27;pr_wk&#x27;,&#x27;pr_econ&#x27;,&#x27;adj_econ&#x27;,&#x27;wk_rate&#x27;,&#x27;pr_dot&#x27;,&#x27;cons&#x27;,&#x27;ipl_pr_balls&#x27;,&#x27;pace_spin&#x27;,&#x27;tot_last&#x27;]].head(15).round(2).to_string(index=False))
+print(&quot;\n=== RR core check ===&quot;)
+print(&quot;bat RR:&quot;, bat[bat.name.isin(RR_CORE)][[&#x27;name&#x27;,&#x27;pr_balls&#x27;,&#x27;pr_sr&#x27;,&#x27;adj_sr&#x27;,&#x27;tot_last&#x27;]].to_string(index=False))
+print(&quot;bowl RR:&quot;, bowl[bowl.name.isin(RR_CORE)][[&#x27;name&#x27;,&#x27;pr_balls&#x27;,&#x27;pr_econ&#x27;,&#x27;adj_econ&#x27;,&#x27;tot_last&#x27;]].to_string(index=False))
+</pre></details>
+<details><summary>blend.py <span class="sub">— click to expand</span></summary><button class="copybtn" onclick="copyCode(this)">Copy blend.py</button><pre>import pandas as pd, numpy as np
+b=pd.read_pickle(&quot;balls_v3.pkl&quot;)
+legal=b[b[&#x27;is_legal&#x27;]].copy()
+# par IPL-only per subtype
+par = legal[(legal[&#x27;pressure&#x27;])&amp;(legal[&#x27;is_ipl&#x27;])].groupby(&#x27;subtype&#x27;).agg(balls=(&#x27;runs&#x27;,&#x27;size&#x27;), bat_runs=(&#x27;runs&#x27;,&#x27;sum&#x27;), bowl_runs=(&#x27;bowler_runs&#x27;,&#x27;sum&#x27;))
+par[&#x27;par_sr&#x27;]=par[&#x27;bat_runs&#x27;]/par[&#x27;balls&#x27;]*100; par[&#x27;par_econ&#x27;]=par[&#x27;bowl_runs&#x27;]/par[&#x27;balls&#x27;]*6
+print(&quot;IPL-only par:\n&quot;, par.to_string())
+psr=par[&#x27;par_sr&#x27;].to_dict(); pec=par[&#x27;par_econ&#x27;].to_dict()
+def ipl_bat(df):
+    out={}
+    d=df[df[&#x27;is_ipl&#x27;] &amp; df[&#x27;pressure&#x27;]]
+    for (pid,name), x in d.groupby([&#x27;striker_id&#x27;,&#x27;striker_name&#x27;]):
+        if len(x)&lt;20: continue
+        exp = sum(psr.get(s,150) for s in x[&#x27;subtype&#x27;])/len(x)
+        sr = x[&#x27;runs&#x27;].sum()/len(x)*100
+        out[pid]=(len(x), sr, sr-exp)
+    return out
+def ipl_bowl(df):
+    out={}
+    d=df[df[&#x27;is_ipl&#x27;] &amp; df[&#x27;pressure&#x27;]]
+    for (pid,name), x in d.groupby([&#x27;bowler_id&#x27;,&#x27;bowler_name&#x27;]):
+        if len(x)&lt;20: continue
+        exp = sum(pec.get(s,9.0) for s in x[&#x27;subtype&#x27;])/len(x)
+        ec = x[&#x27;bowler_runs&#x27;].sum()/len(x)*6
+        out[pid]=(len(x), ec, ec-exp)
+    return out
+ib=ipl_bat(legal); iw=ipl_bowl(legal)
+bat=pd.read_csv(&quot;bat_ranked.csv&quot;); bowl=pd.read_csv(&quot;bowl_ranked.csv&quot;)
+# recent 2025-26 adj: use full par (subtype x format) already in balls_v3 par_sr/par_econ
+legal[&#x27;yr&#x27;]=legal[&#x27;match_id&#x27;].map(pd.read_csv(&#x27;Data Pack/matches.csv&#x27;).set_index(&#x27;match_id&#x27;)[&#x27;comp_id&#x27;].map(pd.read_csv(&#x27;Data Pack/competitions.csv&#x27;).set_index(&#x27;comp_id&#x27;)[&#x27;season&#x27;]).to_dict()).astype(str).str[:4].astype(float)
+def recent_bat(df):
+    out={}
+    d=df[(df[&#x27;yr&#x27;]&gt;=2025)&amp;df[&#x27;pressure&#x27;]]
+    for (pid,name), x in d.groupby([&#x27;striker_id&#x27;,&#x27;striker_name&#x27;]):
+        if len(x)&lt;30: continue
+        exp=x[&#x27;par_sr&#x27;].mean(); sr=x[&#x27;runs&#x27;].sum()/len(x)*100
+        out[pid]=(len(x), sr, sr-exp)
+    return out
+def recent_bowl(df):
+    out={}
+    d=df[(df[&#x27;yr&#x27;]&gt;=2025)&amp;df[&#x27;pressure&#x27;]]
+    for (pid,name), x in d.groupby([&#x27;bowler_id&#x27;,&#x27;bowler_name&#x27;]):
+        if len(x)&lt;30: continue
+        exp=x[&#x27;par_econ&#x27;].mean(); ec=x[&#x27;bowler_runs&#x27;].sum()/len(x)*6
+        out[pid]=(len(x), ec, ec-exp)
+    return out
+rb=recent_bat(legal); rw=recent_bowl(legal)
+# blended: final = 0.6*rating + 0.25*ipl_score + 0.15*recent_score ; scores normalised 0-100 within eligible pool
+def norm_dict(vals, higher=True):
+    s=pd.Series(vals); lo,hi=s.quantile(0.05),s.quantile(0.95); x=((s-lo)/(hi-lo)*100).clip(0,100)
+    return (x if higher else 100-x).to_dict()
+# BAT
+e=bat[(bat.pr_balls&gt;=70)&amp;(bat.tot_balls&gt;=300)&amp;(bat.pr_inn&gt;=10)].copy()
+e[&#x27;ipl_adj_raw&#x27;]=[ib.get(p,(np.nan,np.nan,np.nan))[2] if p in ib else np.nan for p in e.pid]
+e[&#x27;ipl_adj&#x27;]=[(ib[p][2]*ib[p][0]/(ib[p][0]+60)) if p in ib else np.nan for p in e.pid]
+e[&#x27;ipl_balls2&#x27;]=[ib.get(p,(0,0,0))[0] if p in ib else 0 for p in e.pid]
+e[&#x27;rec_adj&#x27;]=[(rb[p][2]*rb[p][0]/(rb[p][0]+60)) if p in rb else np.nan for p in e.pid]
+e[&#x27;ipl_score&#x27;]=pd.Series(norm_dict(e[&#x27;ipl_adj&#x27;].dropna(),True)).reindex(e.index)
+# fill missing ipl score with 30 (penalty for no IPL pressure evidence)
+e[&#x27;ipl_score&#x27;]=e[&#x27;ipl_score&#x27;].fillna(30)
+e[&#x27;rec_score&#x27;]=pd.Series(norm_dict(e[&#x27;rec_adj&#x27;].dropna(),True)).reindex(e.index).fillna(40)
+e[&#x27;final&#x27;]=0.60*e[&#x27;rating&#x27;]+0.25*e[&#x27;ipl_score&#x27;]+0.15*e[&#x27;rec_score&#x27;]
+e=e.sort_values(&#x27;final&#x27;,ascending=False)
+e.to_csv(&quot;bat_final.csv&quot;,index=False)
+print(&quot;\nBAT blended top 20:&quot;)
+print(e[[&#x27;name&#x27;,&#x27;rating&#x27;,&#x27;final&#x27;,&#x27;pr_balls&#x27;,&#x27;pr_sr&#x27;,&#x27;adj_sr&#x27;,&#x27;ipl_balls2&#x27;,&#x27;ipl_adj&#x27;,&#x27;rec_adj&#x27;,&#x27;ipl_pr_balls&#x27;,&#x27;tot_last&#x27;]].head(20).round(1).to_string(index=False))
+# BOWL
+w=bowl[(bowl.pr_balls&gt;=70)&amp;(bowl.tot_balls&gt;=300)&amp;(bowl.pr_inn&gt;=10)].copy()
+w[&#x27;ipl_adj&#x27;]=[(iw[p][2]*iw[p][0]/(iw[p][0]+60)) if p in iw else np.nan for p in w.pid]
+w[&#x27;ipl_balls2&#x27;]=[iw.get(p,(0,0,0))[0] if p in iw else 0 for p in w.pid]
+w[&#x27;rec_adj&#x27;]=[(rw[p][2]*rw[p][0]/(rw[p][0]+60)) if p in rw else np.nan for p in w.pid]
+w[&#x27;ipl_score&#x27;]=pd.Series(norm_dict(w[&#x27;ipl_adj&#x27;].dropna(),False)).reindex(w.index).fillna(30)
+w[&#x27;rec_score&#x27;]=pd.Series(norm_dict(w[&#x27;rec_adj&#x27;].dropna(),False)).reindex(w.index).fillna(40)
+w[&#x27;final&#x27;]=0.60*w[&#x27;rating&#x27;]+0.25*w[&#x27;ipl_score&#x27;]+0.15*w[&#x27;rec_score&#x27;]
+w=w.sort_values(&#x27;final&#x27;,ascending=False)
+w.to_csv(&quot;bowl_final.csv&quot;,index=False)
+print(&quot;\nBOWL blended top 20:&quot;)
+print(w[[&#x27;name&#x27;,&#x27;rating&#x27;,&#x27;final&#x27;,&#x27;pr_balls&#x27;,&#x27;pr_econ&#x27;,&#x27;adj_econ&#x27;,&#x27;ipl_balls2&#x27;,&#x27;ipl_adj&#x27;,&#x27;rec_adj&#x27;,&#x27;ipl_pr_balls&#x27;,&#x27;pace_spin&#x27;,&#x27;tot_last&#x27;]].head(20).round(2).to_string(index=False))
+</pre></details>
+<details><summary>checks.py <span class="sub">— click to expand</span></summary><button class="copybtn" onclick="copyCode(this)">Copy checks.py</button><pre>import pandas as pd, numpy as np
+b=pd.read_pickle(&quot;balls_v3.pkl&quot;)
+legal=b[b[&#x27;is_legal&#x27;]].copy()
+_mm=pd.read_csv(&#x27;Data Pack/matches.csv&#x27;); _cc=pd.read_csv(&#x27;Data Pack/competitions.csv&#x27;)
+_smap=_mm.set_index(&#x27;match_id&#x27;)[&#x27;comp_id&#x27;].map(_cc.set_index(&#x27;comp_id&#x27;)[&#x27;season&#x27;]).to_dict()
+legal[&#x27;season&#x27;]=legal[&#x27;match_id&#x27;].map(_smap)
+legal[&#x27;match_inn&#x27;]=legal[&#x27;match_id&#x27;].astype(str)+&#x27;_&#x27;+legal[&#x27;innings&#x27;].astype(str)
+def yr(s):
+    try: return int(str(s)[:4])
+    except: return np.nan
+legal[&#x27;yr&#x27;]=legal[&#x27;season&#x27;].apply(yr)
+legal[&#x27;period&#x27;]=np.where(legal[&#x27;yr&#x27;]&gt;=2025,&#x27;2025-26&#x27;,&#x27;2022-24&#x27;)
+bat_final=[&quot;Naman Dhir&quot;,&quot;Suryakumar Yadav&quot;,&quot;Jos Buttler&quot;,&quot;Phil Salt&quot;,&quot;Glenn Phillips&quot;,&quot;Liam Livingstone&quot;,&quot;Rinku Singh&quot;,&quot;Tim David&quot;,&quot;Shreyas Iyer&quot;,&quot;Tristan Stubbs&quot;,&quot;William Jacks&quot;,&quot;Nicholas Pooran&quot;]
+bowl_final=[&quot;Akeal Hosein&quot;,&quot;Matheesha Pathirana&quot;,&quot;Gerald Coetzee&quot;,&quot;Maheesh Theekshana&quot;,&quot;Jasprit Bumrah&quot;,&quot;Corbin Bosch&quot;,&quot;Sunil Narine&quot;,&quot;Mustafizur Rahman&quot;,&quot;Noor Ahmad&quot;,&quot;Kuldeep Yadav&quot;,&quot;Rashid Khan&quot;,&quot;Eshan Malinga&quot;]
+def bat_check(name):
+    d=legal[(legal[&#x27;striker_name&#x27;]==name)]
+    pr=d[d[&#x27;pressure&#x27;]]
+    def sr(x): return x[&#x27;runs&#x27;].sum()/len(x)*100 if len(x) else np.nan
+    ipl=pr[pr[&#x27;is_ipl&#x27;]]; t20=pr[~pr[&#x27;is_ipl&#x27;]]
+    e1=pr[pr[&#x27;period&#x27;]==&#x27;2022-24&#x27;]; e2=pr[pr[&#x27;period&#x27;]==&#x27;2025-26&#x27;]
+    print(f&quot;{name}: PR {len(pr)}b SR {sr(pr):.1f} | IPL-PR {len(ipl)}b SR {sr(ipl):.1f} | T20I-PR {len(t20)}b SR {sr(t20):.1f} | 22-24 {len(e1)}b SR {sr(e1):.1f} | 25-26 {len(e2)}b SR {sr(e2):.1f} | death-share {(pr[&#x27;subtype&#x27;]==&#x27;death&#x27;).mean()*100:.0f}% | IPL tot balls {len(d[d[&#x27;is_ipl&#x27;]])}&quot;)
+def bowl_check(name):
+    d=legal[(legal[&#x27;bowler_name&#x27;]==name)]
+    pr=d[d[&#x27;pressure&#x27;]]
+    def ec(x): return x[&#x27;bowler_runs&#x27;].sum()/len(x)*6 if len(x) else np.nan
+    def wr(x): return x[&#x27;bowler_wkt&#x27;].sum()/len(x)*24 if len(x) else np.nan
+    ipl=pr[pr[&#x27;is_ipl&#x27;]]; t20=pr[~pr[&#x27;is_ipl&#x27;]]
+    e1=pr[pr[&#x27;period&#x27;]==&#x27;2022-24&#x27;]; e2=pr[pr[&#x27;period&#x27;]==&#x27;2025-26&#x27;]
+    print(f&quot;{name}: PR {len(pr)}b Ec {ec(pr):.2f} Wk/24 {wr(pr):.2f} | IPL-PR {len(ipl)}b Ec {ec(ipl):.2f} | T20I-PR {len(t20)}b Ec {ec(t20):.2f} | 22-24 {len(e1)}b Ec {ec(e1):.2f} | 25-26 {len(e2)}b Ec {ec(e2):.2f} | death-share {(pr[&#x27;subtype&#x27;]==&#x27;death&#x27;).mean()*100:.0f}% | IPL tot balls {len(d[d[&#x27;is_ipl&#x27;]])}&quot;)
+print(&quot;=== BAT finalists ===&quot;)
+for n in bat_final: bat_check(n)
+print(&quot;\n=== BOWL finalists ===&quot;)
+for n in bowl_final: bowl_check(n)
+print(&quot;\n=== RR 2026 squad pressure (bat) ===&quot;)
+rr26=[&quot;Yashasvi Jaiswal&quot;,&quot;Vaibhav Sooryavanshi&quot;,&quot;Riyan Parag&quot;,&quot;Dhruv Jurel&quot;,&quot;Shimron Hetmyer&quot;,&quot;Ravindra Jadeja&quot;,&quot;Sam Curran&quot;,&quot;Donovan Ferreira&quot;,&quot;Dasun Shanaka&quot;,&quot;Shubham Dubey&quot;,&quot;Lhuan Pretorius&quot;]
+bat=pd.read_csv(&quot;bat_stats2.csv&quot;)
+print(bat[bat.name.isin(rr26)][[&#x27;name&#x27;,&#x27;tot_balls&#x27;,&#x27;pr_balls&#x27;,&#x27;pr_runs&#x27;,&#x27;pr_sr&#x27;,&#x27;adj_sr&#x27;,&#x27;uplift&#x27;,&#x27;pr_avg&#x27;,&#x27;cons&#x27;,&#x27;ipl_pr_balls&#x27;]].round(1).sort_values(&#x27;adj_sr&#x27;,ascending=False).to_string(index=False))
+print(&quot;\n=== RR 2026 squad pressure (bowl) ===&quot;)
+bowl=pd.read_csv(&quot;bowl_stats2.csv&quot;)
+rrb=[&quot;Jofra Archer&quot;,&quot;Sandeep Sharma&quot;,&quot;Tushar Deshpande&quot;,&quot;Nandre Burger&quot;,&quot;Kwena Maphaka&quot;,&quot;Kuldeep Sen&quot;,&quot;Ravi Bishnoi&quot;,&quot;Vignesh Puthur&quot;,&quot;Ravindra Jadeja&quot;,&quot;Sam Curran&quot;,&quot;Adam Milne&quot;,&quot;Yudhvir Singh&quot;]
+print(bowl[bowl.name.isin(rrb)][[&#x27;name&#x27;,&#x27;tot_balls&#x27;,&#x27;pr_balls&#x27;,&#x27;pr_wk&#x27;,&#x27;pr_econ&#x27;,&#x27;adj_econ&#x27;,&#x27;wk_rate&#x27;,&#x27;pr_dot&#x27;,&#x27;cons&#x27;,&#x27;ipl_pr_balls&#x27;]].round(2).sort_values(&#x27;adj_econ&#x27;).to_string(index=False))
+print(&quot;\n=== Dataset summary ===&quot;)
+print(&quot;matches:&quot;, len(pd.read_csv(&#x27;Data Pack/matches.csv&#x27;)), &quot;balls inn1-2:&quot;, len(b), &quot;legal:&quot;, len(legal), &quot;pressure legal:&quot;, legal[&#x27;pressure&#x27;].sum())
+print(&quot;IPL matches:&quot;, pd.read_csv(&#x27;Data Pack/matches.csv&#x27;).merge(pd.read_csv(&#x27;Data Pack/competitions.csv&#x27;),on=&#x27;comp_id&#x27;).query(&quot;match_format==&#x27;T20&#x27;&quot;).shape[0])
+</pre></details>
+<p class="note">Also in the repo: <code>final_tables.py</code>, <code>export_numbers.py</code>, <code>make_charts.py</code>, <code>build_report.py</code>, and the computed data in <code>data/</code>.</p>
 </div>
 <footer>SupeRR Selector Season 2 — Rajasthan Royals IPL 2027 Auction Strategy — Aman Prasad Bari — 12 November 2026</footer>
+<script>
+function showTab(which, btn){
+  document.getElementById('tab-bat').style.display = which==='bat' ? 'block' : 'none';
+  document.getElementById('tab-bowl').style.display = which==='bowl' ? 'block' : 'none';
+  document.querySelectorAll('.tabbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function copyText(t, btn){
+  const done=()=>{btn.textContent='Copied'; setTimeout(()=>{btn.textContent=btn.dataset.orig||'Copy';},1500);};
+  btn.dataset.orig=btn.textContent;
+  if(navigator.clipboard && navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,()=>{fallback(t);done();});} else {fallback(t);done();}
+  function fallback(s){const ta=document.createElement('textarea');ta.value=s;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');}catch(e){}ta.remove();}
+}
+function copyJourney(btn){copyText(document.getElementById('journey').innerText, btn);}
+function copyLists(btn){copyText('Batters: 1 Naman Dhir, 2 Suryakumar Yadav, 3 Shreyas Iyer, 4 Tim David, 5 Jos Buttler, 6 Liam Livingstone, 7 William Jacks, 8 Marcus Stoinis, 9 Rinku Singh, 10 Nicholas Pooran. Bowlers: 1 Jasprit Bumrah, 2 Maheesh Theekshana, 3 Matheesha Pathirana, 4 Sunil Narine, 5 Noor Ahmad, 6 Mustafizur Rahman, 7 Corbin Bosch, 8 Gerald Coetzee, 9 Varun Chakravarthy, 10 Eshan Malinga.', btn);}
+function copyCode(btn){const pre=btn.parentElement.querySelector('pre');copyText(pre.innerText, btn);}
+function copyAllCode(btn){let s='';document.querySelectorAll('pre').forEach(p=>{s+=p.innerText+'\n\n';});copyText(s, btn);}
+</script>
 </body>
 </html>
